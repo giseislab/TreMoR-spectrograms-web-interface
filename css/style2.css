@@ -1,0 +1,56 @@
+body{font-family:Verdana,Arial,Helvetica,sans-serif;font-size:12px;}
+
+
+th {background-color:#FAEBD7}
+
+body
+{
+	background-color: #ffffff;
+}
+
+h1,h2,h3,hr 
+{
+	color:saddlebrown; 
+}
+
+#a:link    {color:darkred}
+#a:visited {color:darkred}
+#a:active  {color:red}
+a:link    {text-decoration:none}
+a:visited    {text-decoration:none}
+a:active    {text-decoration:none}
+
+h1 {font-size: 14pt}
+h2 {font-size: 12pt}
+h3 {font-size: 11pt}
+p, li {font-size: 10pt}
+img {border: none !important;}
+.tdimg
+{
+   display: table-cell;
+   background-repeat : no-repeat;
+   #background-position:-16px -15px;
+   overflow: hidden;
+   #height: 100px; 
+   #width: 119px;	
+   height: 150px; 
+   width: 96px;	
+}
+
+.table_collapse
+{ 
+	border-collapse: collapse;
+}
+
+th,td {
+padding:0;
+}
+
+table {
+border-collapse:collapse;
+}
+
+form.menu_hoursago { display: none }
+form.menu_absolutetime { display: none }
+div.menu_arrows { display: block }
+.hidden { display:none;}
