@@ -1,54 +1,53 @@
 <?php
-include('./includes/antelope.inc');
-$page_title = 'Spectrogram Mosaic';
-$css = array( "css/style.css", "css/style2.css" );
-$googlemaps = 0;
-$js = array();
 
-// Standard XHTML header
-include('./includes/header.inc');
+# header files
+include('./includes/antelope.php');
+include('./includes/daysPerMonth.php');
+include('./includes/mosaicMakerTable.php');	
+include('./includes/curPageURL.php');
+include('./includes/findprevnextsubnets.php');
+include('./includes/scriptname.php');
+include('./includes/factorize.php');
+
+# Standard XHTML header
+$subnet = !isset($_REQUEST['subnet'])? $subnets[0] : $_REQUEST['subnet'];
+$page_title = "$subnet Spectrogram Mosaic";
+#$css = array( "css/reset2.css", "http://www.avo.alaska.edu/includes/admin/admin_test.css", "css/newspectrograms.css", "css/mosaicMaker.css" );
+#$css = array( "http://www.avo.alaska.edu/includes/admin/admin_test.css", "css/newspectrograms.css", "css/mosaicMaker.css" );
+$css = array( "css/newspectrograms.css", "css/mosaicMaker.css" );
+$googlemaps = 0;
+$js = array('toggle_menus.js', 'toggle_visibility.js');
+include('./includes/header.php');
 
 ?>
 
-<body bgcolor="#FFFFFF">
-<script type="text/javascript">
-<!--
-    function toggle_visibility(id) {
-       var e = document.getElementById(id);
-       if(e.style.display == 'block')
-          e.style.display = 'none';
-       else
-          e.style.display = 'block';
-    }
-//-->
-</script>
+<body>
 
 <?php
 
 	# global variables
 	$debugging = 0;
-
-
-	# header files
-	include('./includes/daysPerMonth.inc');
-	#include('./includes/mosaicMaker.inc');
-	include('./includes/mosaicMakerTable.inc');
-	include('./includes/findprevnextsubnets.inc');
-	include('./includes/scriptname.inc');
+	$scriptname = scriptname();
 
 	# Set date/time now
-	$timenow = now();
+	$timenow = now(); ################# KISKA TIME #################### 
 	$currentYear = epoch2str($timenow, "%Y");
 	$currentMonth = epoch2str($timenow, "%m");
 	$currentDay = epoch2str($timenow, "%d");
 	$currentHour = epoch2str($timenow, "%H");
-#	$currentMinute = epoch2str($timenow, "%i);
-
+	$currentMinute = epoch2str($timenow, "%i");
+	$currentMinute = epoch2str($timenow, "%M");
+	$currentSec = epoch2str($timenow, "%S");
 
 	# Set convenience variables from CGI parameters
-	$subnet = !isset($_REQUEST['subnet'])? $subnets[0] : $_REQUEST['subnet'];
+	$subnet = !isset($_REQUEST['subnet'])? "Spurr" : $_REQUEST['subnet'];
 	$plotsPerRow = !isset($_REQUEST['plotsPerRow'])? 6 : $_REQUEST['plotsPerRow'];
-	if (isset($_REQUEST['starthour'])) {
+        if (   (isset($_REQUEST['starthour'])) && (isset($_REQUEST['endhour'])) ) {
+
+		# Called with starthour, endhour
+
+		# Although this script will accept URL variables starthour and endhour, here we translate them into
+		# year/month/day hour:minute, and we also change the URL PHP thinks this page has, so posts real time to log posts 
 		$starthour = $_REQUEST['starthour'];
         	$endhour = !isset($_REQUEST['endhour'])? 0 : $_REQUEST['endhour'];
                 if ($starthour < $endhour) {
@@ -56,7 +55,7 @@ include('./includes/header.inc');
 			$endhour = $starthour;
 			$starthour = $tmphour;
 		} 
-		$timestart = now() - $starthour * 3600;
+		$timestart = now() - $starthour * 3600; ###### KISKA TIME ################################################
         	list($year, $month, $day, $hour, $minute) = epoch2YmdHM($timestart);
         	$minute=floorminute($minute);
         	$numhours = $starthour - $endhour;
@@ -66,229 +65,242 @@ include('./includes/header.inc');
 		$_REQUEST['hour'] = $hour;
 		$_REQUEST['minute'] = $minute;
 		$_REQUEST['numhours'] = $numhours;
+
 	} else {
-		$year = !isset($_REQUEST['year'])? $currentYear : $_REQUEST['year'];
-		$month = !isset($_REQUEST['month'])? $currentMonth : $_REQUEST['month'];
-		$day = !isset($_REQUEST['day'])? $currentDay : $_REQUEST['day'];
-		$hour = !isset($_REQUEST['hour'])? $currentHour : $_REQUEST['hour'];
-		$minute = !isset($_REQUEST['minute'])? "00" : $_REQUEST['minute'];
+
+		# Called with year/month/day hour:minute, or with nothing. In the latter case, we default to last 2 hours
+		$timestart = now() - 2 * 3600; ###### KISKA TIME ################################################
+        	list($year, $month, $day, $hour, $minute) = epoch2YmdHM($timestart);
+
+		$year = !isset($_REQUEST['year'])? $year : $_REQUEST['year'];
+		$month = !isset($_REQUEST['month'])? $month : $_REQUEST['month'];
+		$day = !isset($_REQUEST['day'])? $day : $_REQUEST['day'];
+		$hour = !isset($_REQUEST['hour'])? $hour : $_REQUEST['hour'];
+		$minute = !isset($_REQUEST['minute'])? $minute : $_REQUEST['minute'];
+        	$minute=floorminute($minute);
 		$numhours = !isset($_REQUEST['numhours'])? 2 : $_REQUEST['numhours'];
+        	$starttime = str2epoch("$year/$month/$day $hour:$minute:00");
+        	$starthour = (($timenow - $starttime) / 3600);
+        	$endhour   = (($timenow - $starttime) / 3600) - $numhours;
+
 	}
+	$_SERVER["REQUEST_URI"] = $_SERVER["SCRIPT_NAME"]."?subnet=$subnet&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&numhours=$numhours&plotsPerRow=$plotsPerRow";
 		
 	# Degugging
 	if ($debugging == 1) {
-		echo "<p>subnet=$subnet ";
-		echo "year=$year ";
-		echo "month=$month ";
-		echo "day=$day ";
-		echo "hour=$hour ";
-		echo "minute=$minute ";
-		echo "hour=$hour ";
-		echo "numhours=$numhours ";
-		echo "starthour=$starthour ";
-		echo "endhour=$endhour <p>\n ";
+		print "<p>subnet=$subnet</p>\n";
+		print "<p>Mosaic time: $year/$month/$day $hour:$minute</p>\n";
+		print "<p>Current time: $currentYear/$currentMonth/$currentDay $currentHour:$currentMinute</p>\n";
+		print "<p>url = ".curPageURL()."</p>\n";
 		echo "<hr/>\n";
 	}
-
-	# Horizontal rule
-	print "<hr />";
-
- 
-	if(isset($_REQUEST["subnet"])) {
-		if (isset($_REQUEST["year"]) && isset($_REQUEST["month"]) && isset($_REQUEST["day"]) && isset($_REQUEST["hour"])  && isset($_REQUEST["numhours"])  ) {
-
-			# make sure the date is valid
-			if(!checkdate($month,$day,$year)){
-				echo "<p>invalid date</p>";
- 			}
-			else
-			{
-
-				# generate the epoch time now
-				$timenow   = time(); # seconds # get utc/local conversion issues
-				$timenow = now();
 	
-				# generate the epoch time for the start date/time requested
-				#$starttime = mktime($hour, $minute, 0, $month, $day, $year); # get local/utc conversion issues
-				$starttime = str2epoch("$year/$month/$day $hour:$minute:00");
-			#	echo "<p>Starttime: $starttime, timenow: $timenow</p>";	
-				if ($timenow > $starttime) {
-				
-					# work out the difference in seconds
-					$starthour = (($timenow - $starttime) / 3600);
-					$endhour   = (($timenow - $starttime) / 3600) - $numhours;
-					mosaicMaker($subnet, $starthour, $endhour, $plotsPerRow, $WEBPLOTS);
-				}
-				else
-				{
-					echo "<p>Date/Time entered must be in the past</p>\n";
-				}
-			}
-		} 
-	}
-	else
-	{
-		echo "<h1>Welcome to the Spectrogram Mosaic Maker!</h1><p>This page provides links to pre-generated png files of 10-minute spectrograms generated by the \"TreMoR\" system.</p>";
-	}
-
-	# THE FORM
-	echo "<hr />\n";
-	echo "<table><tr><td>";
-
-	# Start form
-	echo "<form method=\"get\"> ";
-
-	# Start table
-	echo "<table>\n\n";
-
-	# Subnet widgit
-	echo "<tr><td>Subnet</td>\n";
-	echo "<td><select name=\"subnet\"> ";
-	echo "<option value=\"$subnet\" SELECTED>$subnet</option>";
-	foreach ($subnets as $subnet_option) {
-		print "<option value=\"$subnet_option\">$subnet_option</option> ";
-	}
-	print "</select>";
-	echo "</td></tr>\n";
-?>
-
-<?php
-        # Start hour widgit
-        echo "<tr><td>Start</td>\n";
-        printf("<td><input type=\"text\" name=\"starthour\" value=\"%.0f\" size=\"4\"> ",$starthour);
-        echo " hours ago </td>\n";
-
-        # End hour widgit
-        echo "<td>End</td>\n";
-        printf("<td><input type=\"text\" name=\"endhour\" value=\"%.0f\" size=\"4\"> ",$endhour);
-        echo " hours ago</td>\n";
-
-        # End hour widgit
-        echo "<td>Spectrograms per row:</td>\n";
-        printf("<td><input type=\"text\" name=\"plotsPerRow\" value=\"%.0f\" size=\"4\"> ",$plotsPerRow);
-        echo " </tr>\n";
-?>
-	</div>
-
-<?php
-	################## START TIME
-	echo "<tr><td>Start time (UTC):</td><td>\n";
-	# start new table inside this cell
-	echo "<table><tr>\n";
-
-	# Year widgit
-	echo "<td>Year:</td>\n";
-	echo "<td><input type=\"text\" name=\"year\" value=\"$year\" size=\"4\" readonly=readonly> ";
-	echo "</td>\n";
-
-	# Month widgit
-	echo "<td>Month:</td>\n";
-	echo "<td><input type=\"text\" name=\"month\" value=\"$month\" size=\"2\" readonly=readonly> ";
-	echo "</td>\n";
-
-	# Day widgit
-	echo "<td>Day:</td>\n";
-	echo "<td><input type=\"text\" name=\"day\" value=\"$day\" size=\"2\" readonly=readonly> ";
-	echo "</td>\n";
-
-	# Hour widgit
-	echo "<td>Hour:</td>\n";
-	echo "<td><input type=\"text\" name=\"hour\" value=\"$hour\" size=\"2\" readonly=readonly > ";
-	echo "</td>\n";
-
-	# Minute widgit
-	echo "<td>Minute:</td>\n";
-	echo "<td><select name=\"minute\" disabled=disabled> ";
-	echo "<option value=\"$minute\" SELECTED>$minute</option>";
-	$minutes = array("00", "10", "20", "30", "40", "50");
-	foreach ($minutes as $minute_option) {
-		print "<option value=\"$minute_option\">$minute_option</option> ";
-	}
-	print "</select>";
-	echo "</td>\n";
-
-	# end this table
-	echo "</tr></table>\n";
-
-	# end this cell and row
-	echo "</td></tr>\n";
-	###################### END OF START TIME
-
-	# Number of hours widgit
-	echo "<tr><td>Number of hours:</td>\n";
-	echo "<td><input type=\"text\" name=\"numhours\" value=\"$numhours\" size=\"2\" readonly=readonly> ";
-	echo "</td></tr>\n";
-
-?>
-	</div>
-<?php
-
-	# Submit & Reset buttons
-	echo "<tr>\n";
-	print "<td><input type=\"submit\" name=\"submit\" value=\"Make Mosaic\"></td>\n";
-
-	echo "</tr>\n";
-
-	# End the table
-	echo "</table>\n";
-?>
-
-
-<?php
-	# End form
-	echo "</form>\n";
-
-
-
-	# Add mosaic arrows
-	$scriptname = scriptname();
-	if ($debugging == 1) {
-        	echo "scriptname = $scriptname, subnet=$subnet, $year/$month/$day $hour:$minute:00, previous=$previousSubnet, next=$nextSubnet\n";
-	}
-
+	# Previous & Next subnets	
         list ($previousSubnet, $nextSubnet) = findprevnextsubnets($subnet, $subnets);
+
+	# Early and later mosaic time windows
         $numseconds = $numhours * 3600;
         list ($pyear, $pmonth, $pday, $phour, $pminute, $psecs) = addSeconds($year, $month, $day, $hour, $minute, 0, -$numseconds);
         $pminute=floorminute($pminute);
-
         list ($nyear, $nmonth, $nday, $nhour, $nminute, $nsecs) = addSeconds($year, $month, $day, $hour, $minute, 0, $numseconds);
         $nminute=floorminute($nminute);
+?>	
 
-        echo "</td><td>\n";
+<!-- Create a menu across the top -->
+<div id="nav">
+        <ul>
+	<li title="Toggle menu to reselect time period based on relative start and end time"  onClick="toggle_menus('menu_hoursago')">Hours ago</li>
+	<li title="Toggle menu to reselect time period based on absolute start time and number of hours" onClick="toggle_menus('menu_absolutetime')">Start time</li>
+  	<li class="subnetlink">
+		<?php
+			echo "<a title=\"Jump to the previous subnet along the arc, same time period\" href=\"$scriptname?subnet=$previousSubnet&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&numhours=$numhours&plotsPerRow=$plotsPerRow\">&#9650 $previousSubnet</a>\n";
+		?>
+	</li>
+  	<li class="subnetpulldown">
+		<?php
+			# Subnet widgit
+                  	echo "<select title=\"Jump to a different subnet\" onchange=\"window.open('?subnet=' + this.options[this.selectedIndex].value + '&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&numhours=$numhours&plotsPerRow=$plotsPerRow', '_top')\" name=\"subnet\">";
 
-        # diagnostic info
-        echo "</td><td>\n";
+			echo "<option value=\"$subnet\" SELECTED>$subnet</option>";
+			foreach ($subnets as $subnet_option) {
+				print "<option value=\"$subnet_option\">$subnet_option</option> ";
+			}
+			print "</select>";
+		?>
+	</li>
+  	<li class="subnetlink">
+		<?php
+			echo "<a title=\"Jump to the next subnet along the arc, same time period\" href=\"$scriptname?subnet=$nextSubnet&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&numhours=$numhours&plotsPerRow=$plotsPerRow\">&#9660 $nextSubnet</a>\n";
+		?>
+	</li>
+  	<li>
+		<?php
+         		echo "<a title=\"Jump back in time $numhours hours\" href=\"$scriptname?subnet=$subnet&year=$pyear&month=$pmonth&day=$pday&hour=$phour&minute=$pminute&numhours=$numhours&plotsPerRow=$plotsPerRow\">&#9668 Earlier</a>\n";
+		?>
+	</li>
+  	<li>
+		<?php
+         		echo "<a title=\"Jump forward in time $numhours hours\" href=\"$scriptname?subnet=$subnet&year=$nyear&month=$nmonth&day=$nday&hour=$nhour&minute=$nminute&numhours=$numhours&plotsPerRow=$plotsPerRow\">&#9658 Later</a>\n";
+		?>
+	</li>
+  	<li>
+		<?php
+		        echo "<a title=\"Redraw spectrogram mosaic to end at current time\" href=\"$scriptname?subnet=$subnet&starthour=$numhours&endhour=0&plotsPerRow=$plotsPerRow\">Now</a>\n";
+		?>
+	</li>
+	<li onClick="toggle_visibility('show_url')" title="Permanent link to this spectrogram mosaic">Permalink</li>
+	<li title="Number of 10-minute spectrogram thumbnails to show on one row">
+		<?php
+			# plots per row widgit
+                  	echo "<select onchange=\"window.open('?subnet=$subnet&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&numhours=$numhours&plotsPerRow=' + this.options[this.selectedIndex].value, '_top')\" name=\"plotsPerRow\">";
 
-                echo "<table><tr><td>\n";
-                echo "&nbsp;\n";
-                echo "</td><td>\n";
-                echo "<a href=\"$scriptname?subnet=$previousSubnet&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&numhours=$numhours\"><img height=50 width=50 src=images/uparrow.gif></a>\n";
-                echo "</td><td>\n";
-                echo "&nbsp;\n";
-                echo "</td></tr>\n";
+			echo "<option value=\"$plotsPerRow\" SELECTED>$plotsPerRow</option>";
+			$factors = allFactors(6 * $numhours);
+			sort($factors);
+			#foreach (array(1,2,3,6,9,12,18,24) as $ppr_option) {
+			#foreach (sort($factors) as $ppr_option) {
+			foreach ($factors as $ppr_option) {
+				if ($ppr_option > 2 && $ppr_option < 25) {
+					print "<option value=\"$ppr_option\">$ppr_option</option> ";
+				}
+			}
+			print "</select>";
+		?>	
+	</li>	
+        </ul>
+</div>
+<p/>
+<div id="show_url" class="hidden">
+	<table class="center" border=0><tr><td align="center">
+		<?php
+			# Show URL
+			$link = curPageURL();
+			$loc = strpos($link, "plotsPerRow");
+			if ($loc !== FALSE) {
+				$link = substr($link, 0, $loc - 1);
+			}
+			echo "The permanent link to this web page is: <br/><font color='blue'>$link</font><br/n> ";
+                        $link = urlencode($link);
+                        $url = '<p/><table border=0 title="Create an AVO log post with this URL embedded in it"><tr><td><a class="button" href="https://www.avo.alaska.edu/admin/logs/add_post.php?url=' . $link . '" target=\"logs\">Add log post</a></td></tr></table>';
+                        echo "$url\n";
+		?>
+	</td></tr></table>
 
-                echo "<tr><td>\n";
-                echo "<a href=\"$scriptname?subnet=$subnet&year=$pyear&month=$pmonth&day=$pday&hour=$phour&minute=$pminute&numhours=$numhours\"><img height=50 width=50 src=images/leftarrow.gif></a>\n";
-                echo "</td><td align=center>\n";
-                echo "<a href=\"$scriptname?subnet=$subnet&starthour=$numhours&endhour=0\">Now</a>\n";
-                echo "</td><td>\n";
-                echo "<a href=\"$scriptname?subnet=$subnet&year=$nyear&month=$nmonth&day=$nday&hour=$nhour&minute=$nminute&numhours=$numhours\"><img height=50 width=50 src=images/rightarrow.gif></a>\n";
-                echo "</td></tr>\n";
+</div>
+<p/>
 
-                echo "<tr><td>\n";
-                echo "&nbsp;\n";
-                echo "</td><td>\n";
-                echo "<a href=\"$scriptname?subnet=$nextSubnet&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&numhours=$numhours\"><img height=50 width=50 src=images/downarrow.gif></a>\n";
-                echo "</td><td>\n";
-                echo "&nbsp;\n";
-                echo "</td></tr></table>\n";
-
-        echo "</td></tr></table>\n";
-
+<?php
+	$plotMosaic = 0; 
+	# make sure the date is valid
+	if(!checkdate($month,$day,$year)){
+		echo "<p>invalid date</p>";
+ 	}
+	else
+	{
+		$plotMosaic = 1;
+	}
 ?>
 
 
-<div><script language="Javascript" type="text/javascript">now = new Date;document.write("<p>Generated: " + now.toUTCString()  + "</p>");</script></div>
+<!-- <form method="get" id="menu_hoursago" class="hidden"> -->
+<form method="get" id="menu_hoursago" class="hidden">
+	<table class="center" border=1>
+		<?php
+			echo "<tr>\n";
+			echo "<td>Hours ago:&nbsp;\n";
+			# Start hour widgit
+		        printf("<i>Start</i><input title=\"How many hours ago the mosaic time period should start\" type=\"text\" name=\"starthour\" value=\"%.0f\" size=\"4\">",$starthour);
+
+			# End hour widgit
+		        printf("<td><i>End</i><input title=\"How many hours ago the mosaic time period should end\" type=\"text\" name=\"endhour\" value=\"%.0f\" size=\"4\">",$endhour);
+
+			# Submit & Reset buttons
+                        echo "<input type=\"hidden\" name=\"subnet\" value=\"$subnet\">\n";
+			print "<input title=\"Redraw spectrogram mosaic based on the start and end hours ago here\" type=\"submit\" name=\"submit\" value=\"Go\"></td>\n";
+			echo "</tr>\n";
+		?>
+	</table>
+</form>
+
+<form method="get" id="menu_absolutetime" class="hidden">
+
+        <table class="center" border=1>
+                <?php
+                        echo "<tr>\n";
+
+                                echo "\t\t\t<td title=\"Enter start time for the spectrogram mosaic\" >Start time:&nbsp;";
+						echo "<i>";	
+                                                # Year widgit
+                                                echo "Year:";
+                                                echo "<input type=\"text\" name=\"year\" value=\"$year\" size=\"4\" >";
+
+                                                # Month widgit
+                                                echo "Month:";
+                                                echo "<input type=\"text\" name=\"month\" value=\"$month\" size=\"2\">";
+
+                                                # Day widgit
+                                                echo "Day:";
+                                                echo "<input type=\"text\" name=\"day\" value=\"$day\" size=\"2\" >";
+
+                                                # Hour widgit
+                                                echo "Hour:";
+                                                echo "<input type=\"text\" name=\"hour\" value=\"$hour\" size=\"2\" >";
+
+                                                # Minute widgit
+                                                echo "Minute:";
+                                                echo "<select name=\"minute\">";
+                                                echo "<option value=\"$minute\" SELECTED>$minute</option>";
+                                                $minutes = array("00", "10", "20", "30", "40", "50");
+                                                foreach ($minutes as $minute_option) {
+                                                        print "<option value=\"$minute_option\">$minute_option</option>\n";
+                                                }
+                                                print "</select>";
+						echo "</i>";	
+
+
+                                # end this cell
+                                echo "</td>\n";
+
+				# Number of hours widgit
+				echo "<td title=\"Enter the number of hours for the spectrogram mosaic. End time will be start time plus this many hours\">Number of hours:\n";
+				echo "<input type=\"text\" name=\"numhours\" value=\"$numhours\" size=\"2\"> ";
+				echo "</td>\n";
+
+                                # Submit button
+                                echo "<input type=\"hidden\" name=\"subnet\" value=\"$subnet\">\n";
+                                print "\t\t\t<td title=\"Redraw spectrogram mosaic with start time and number of hours given here\"><input type=\"submit\" name=\"submit\" value=\"Go\"></td>\n";
+
+                        echo "\t\t</tr>\n";
+
+                ?>
+        </table>
+
+</form>
+
+<!-- <div class="center" id="mosaic"> -->
+
+<?php
+	if ($plotMosaic==1) {
+		#mosaicMaker($subnet, $starthour, $endhour, $plotsPerRow, $WEBPLOTS);
+		$title = mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $plotsPerRow, $WEBPLOTS);
+	}
+	else
+	{
+		echo "<h1>Welcome to the Spectrogram Mosaic Maker!</h1><p>This page provides links to PNG files of 10-minute spectrograms pre-generated by the \"TreMoR\" system.</p>";
+	}
+?>
+<script type="text/javascript">
+document.title = "<?php echo $title;?>";
+</script>
+<!-- </div> -->
+
+<script language="Javascript" src="includes/hitcounter.php?page=mosaicMaker"><!--
+//--></script>
+<script language="Javascript" src="includes/hitcounter_unique.php?page=mosaicMaker"><!--
+//--></script>
+
+
 
 </body>
 </html>
+

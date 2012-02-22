@@ -6,8 +6,9 @@ $css = array( "style.css" );
 $googlemaps = 0;
 $js = array();
 
-// Standard XHTML header
-include('./includes/header.inc');
+include('./includes/header.php');
+include('./includes/daysPerMonth.php');
+include('./includes/mosaicMaker.php');
 
 ?>
 
@@ -17,9 +18,7 @@ include('./includes/header.inc');
 
 	clearstatcache();
 
-	# header files
-	include('./includes/daysPerMonth.inc');
-	include('./includes/mosaicMaker.inc');
+
 
 ?>
 

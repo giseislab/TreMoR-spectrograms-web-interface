@@ -11,8 +11,9 @@ $css = array( "style.css" );
 $googlemaps = 0;
 $js = array();
 
-// Standard XHTML header
-include('./includes/header.inc');
+include('./includes/daysPerMonth.php');
+include('./includes/mosaicMaker.php');
+include('./includes/header.php');
 
 ?>
 
@@ -29,11 +30,6 @@ include('./includes/header.inc');
 	$parameterspf = $pfdir . '/parameters.pf';
 	$WEB_PLOTS = "../plots";
 	$subnets = pfget($parameterspf, 'subnetnames');
-
-
-	# header files
-	include('./includes/daysPerMonth.inc');
-	include('./includes/mosaicMaker.inc');
 
 	foreach ($subnets as $subnet) {
 		echo "<p>$subnet</p>\n";
