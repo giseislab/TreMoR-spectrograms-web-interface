@@ -11,6 +11,7 @@ include('./includes/factorize.php');
 
 # Standard XHTML header
 $subnet = !isset($_REQUEST['subnet'])? $subnets[0] : $_REQUEST['subnet'];
+$thumbs = !isset($_REQUEST['thumbs'])? "small" : $_REQUEST['thumbs'];
 $page_title = "$subnet Spectrogram Mosaic";
 #$css = array( "css/reset2.css", "http://www.avo.alaska.edu/includes/admin/admin_test.css", "css/newspectrograms.css", "css/mosaicMaker.css" );
 #$css = array( "http://www.avo.alaska.edu/includes/admin/admin_test.css", "css/newspectrograms.css", "css/mosaicMaker.css" );
@@ -109,8 +110,8 @@ include('./includes/header.php');
 <!-- Create a menu across the top -->
 <div id="nav">
         <ul>
-	<li title="Toggle menu to reselect time period based on relative start and end time"  onClick="toggle_menus('menu_hoursago')">Hours ago</li>
-	<li title="Toggle menu to reselect time period based on absolute start time and number of hours" onClick="toggle_menus('menu_absolutetime')">Start time</li>
+	<li title="Toggle menu to reselect time period based on relative start and end time"  onClick="toggle_menus('menu_hoursago')">Relative time</li>
+	<li title="Toggle menu to reselect time period based on absolute start time and number of hours" onClick="toggle_menus('menu_absolutetime')">Absolute time</li>
   	<li class="subnetlink">
 		<?php
 			echo "<a title=\"Jump to the previous subnet along the arc, same time period\" href=\"$scriptname?subnet=$previousSubnet&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&numhours=$numhours&plotsPerRow=$plotsPerRow\">&#9650 $previousSubnet</a>\n";
@@ -216,6 +217,7 @@ include('./includes/header.php');
 
 			# Submit & Reset buttons
                         echo "<input type=\"hidden\" name=\"subnet\" value=\"$subnet\">\n";
+                        echo "<input type=\"hidden\" name=\"plotsPerRow\" value=\"$plotsPerRow\">\n";
 			print "<input title=\"Redraw spectrogram mosaic based on the start and end hours ago here\" type=\"submit\" name=\"submit\" value=\"Go\"></td>\n";
 			echo "</tr>\n";
 		?>
@@ -268,6 +270,7 @@ include('./includes/header.php');
 
                                 # Submit button
                                 echo "<input type=\"hidden\" name=\"subnet\" value=\"$subnet\">\n";
+                        	echo "<input type=\"hidden\" name=\"plotsPerRow\" value=\"$plotsPerRow\">\n";
                                 print "\t\t\t<td title=\"Redraw spectrogram mosaic with start time and number of hours given here\"><input type=\"submit\" name=\"submit\" value=\"Go\"></td>\n";
 
                         echo "\t\t</tr>\n";
@@ -277,12 +280,13 @@ include('./includes/header.php');
 
 </form>
 
+<br/>
 <!-- <div class="center" id="mosaic"> -->
 
 <?php
 	if ($plotMosaic==1) {
-		#mosaicMaker($subnet, $starthour, $endhour, $plotsPerRow, $WEBPLOTS);
-		$title = mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $plotsPerRow, $WEBPLOTS);
+		#$title = mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $plotsPerRow, $WEBPLOTS);
+		$title = mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $plotsPerRow, $WEBPLOTS, $thumbs);
 	}
 	else
 	{

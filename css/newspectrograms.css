@@ -2,7 +2,8 @@ body {
 	font-family: "Lucida Grande", Tahoma, Arial, Verdana, sans-serif;
 	font-size: 10pt;
 	color:#565656;
-	background-color:#F5F5F5;
+	/*background-color:#F5F5F5;*/
+	background-color:#FFFFFF;
 }
 /*a {
 	text-decoration:none;
@@ -24,7 +25,6 @@ a:link,a:active,a:visited{
 	display:block;
 	padding:0.25em 0.25em 0.25em 0.5em;
 	text-decoration:none;
-	/*background-color:#F5F5F5;*/
 	background-color:#DFDFDF;
 	font-size:100%;
 	font-weight: bold;
@@ -82,11 +82,11 @@ div#nav li a,select{
 h1,h2,h3 {font-size: 125%;}
 li.subnetlink {
 	/*width: 7.2em;*/
-	width: 7.5em;
+	width: 7.9em;
 } 
 li.subnetpulldown {
 	/*width: 7.2em;*/
-	width: 8.2em;
+	width: 8.6em;
 } 
 img {border: none !important;}
 /* This is for row spacers between mosaic rows */

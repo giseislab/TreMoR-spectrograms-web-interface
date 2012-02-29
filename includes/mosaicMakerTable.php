@@ -1,5 +1,5 @@
 <?php
-function mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $plotsPerRow, $WEBPLOTS) {
+function mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $plotsPerRow, $WEBPLOTS, $thumbs) {
 	$timenow = now(); #################### KISKA TIME #########################
 
         # generate the epoch time for the start date/time requested
@@ -35,6 +35,7 @@ function mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $p
 	$c = 0;
 	$latestAge = "?";
 	$firstRow = 1;
+	$oldhhmm = "";
 
 	for ( $time = $starttime + ($numMins * 60); $time < $stoptime; $time += $numMins * 60) {
 
@@ -57,7 +58,9 @@ function mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $p
 		date_default_timezone_set('US/Alaska');
 		$localtime = localtime($floorepochUTC,true); # Cannot just use time (see above vairable) here since it is now "floored"
 		$rowstartlocalhhmm = sprintf("%4d/%02d/%02d %02d:%02d",$localtime[tm_year]+1900,$localtime[tm_mon]+1,$localtime[tm_mday],$localtime[tm_hour],$localtime[tm_min]); 
-	
+		if ($oldhhmm == "") {
+			$oldhhmm = $rowstarthhmm." - ";
+		}	
 		# Set the link to the big image file
 		$sgramphplink = "sgram10min.php?year=$year&month=$month&day=$day&hour=$hour&minute=$floorminute&subnet=$subnet&mosaicurl=".urlencode(curPageURL());
 
@@ -92,10 +95,10 @@ function mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $p
 
 		# CELL STARTS HERE 			
 		#$small_sgram = "$WEBPLOTS/sp/$subnet/$year/$month/$day/small_$timestamp.png";
-		$small_sgram = "$WEBPLOTS/sp/$subnet/$year/$month/$day/thumb_$timestamp.png";
+		$small_sgram = "$WEBPLOTS/sp/$subnet/$year/$month/$day/$thumbs"."_$timestamp.png";
 		if (file_exists($small_sgram)) {
 			$latestAge = $ageStr;
-			echo "<td class=\"tdimg\"><a href=$sgramphplink><img src=$small_sgram></a></td>\n";
+			echo "<td title=\"$oldhhmm$hhmm\" class=\"tdimg\"><a href=$sgramphplink><img src=$small_sgram></a></td>\n";
 		} else {
 			echo "<td class=\"tdimg\"><a href=$sgramphplink>[no data]</a></td>\n";
 		}
@@ -116,6 +119,8 @@ function mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $p
 		
 
 		$c++;
+
+		$oldhhmm = "$hhmm - ";
 	}
 
 	if ($rowFinished == 0) {

@@ -120,6 +120,7 @@ $mosaicurl = urlencode($mosaicurl);
 
 
 		# Add sound file links & imageMap? 
+		list($imgwidth, $imgheight, $imgtype, $imgattr) = getimagesize($sgram);
 		$numsoundfiles = 0;
 		$soundfileroot = str_replace(".png", "", $sgram);
 		$soundfilelist = $soundfileroot . ".sound";
@@ -132,14 +133,17 @@ $mosaicurl = urlencode($mosaicurl);
 			fclose($fh);
 
 			#$soundfiles = glob("$soundfileroot*.wav");
-			$numsoundfiles = count($soundfiles);
-
+			$numsoundfiles = count($soundfiles)-1;
+			#print "<p>height=$imgheight, width=$imgwidth, num=$numsoundfiles</p>\n";
 			//echo "<p>Got $numsoundfiles sound files</p>";
 			if ($numsoundfiles > 0) {
-				$imageSizeX = 576 - 57;
-				$imageSizeY = 756;
-				$imageTop = 45;
-				$imageBottom = 97;
+				$imageSizeX = $imgwidth - 57;
+				$imageSizeX = $imgwidth - 23;
+				$imageSizeY = $imgheight;
+				#$imageTop = 45;
+				$imageTop = 0;
+				#$imageBottom = 97;
+				$imageBottom = 35;
 				$stationNum = 0;
 				$panelSizeY = ($imageSizeY - $imageTop - $imageBottom) / $numsoundfiles;
 				$xUpperLeft = 0;
@@ -148,7 +152,7 @@ $mosaicurl = urlencode($mosaicurl);
 				foreach ($soundfiles as $soundfile) {
 					$yUpperLeft = ($imageTop + $panelSizeY * $stationNum);
 					$yLowerRight = ($yUpperLeft + $panelSizeY);
-					echo "<area shape=\"rect\" href=\"$soundfile\" coords=\"$xUpperLeft,$yUpperLeft  $xLowerRight,$yLowerRight\" alt=\"$soundfile\" />\n";
+					echo "<area shape=\"rect\" href=\"$soundfile\" target=\"sound\" coords=\"$xUpperLeft,$yUpperLeft  $xLowerRight,$yLowerRight\" alt=\"$soundfile\" />\n";
 					$stationNum++;
 				}
 				echo "</map>\n";
@@ -161,16 +165,16 @@ $mosaicurl = urlencode($mosaicurl);
 <!-- Create a menu across the top -->
 <div id="nav">
         <ul>
-	<li title="Toggle menu to reselect time period based on absolute start time and number of hours" onClick="toggle_visibility('menu_absolutetime')">Jump to time</li>
+	<li title="Toggle menu to reselect time period based on absolute start time and number of hours" onClick="toggle_visibility('menu_absolutetime')">Absolute time</li>
   	<li class="subnetlink">
 		<?php
-			echo "<a title=\"Jump to the previous subnet along the arc, same time period\" href=\"$scriptname?subnet=$previousSubnet&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&mosaicurl=$mosaicurl\">&#9650 $previousSubnet<a/>\n";
+			echo "<a title=\"Jump to the previous subnet along the arc, same time period\" href=\"$scriptname?subnet=$previousSubnet&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&mosaicurl=$mosaicurl\">&#9650 $previousSubnet</a>\n";
 		?>
 	</li>
   	<li class="subnetpulldown">
 		<?php
 			# Subnet widgit
-                  	echo "<select title=\"Jump to a different subnet\" onchange=\"window.open('?subnet=' + this.options[this.selectedIndex].value + '&year=$year&month=$month&day=$day&hour=$hour&minute=$minute', '_top')\" name=\"subnet\">\n";
+                  	echo "<select title=\"Jump to a different subnet\" onchange=\"window.open('?subnet=' + this.options[this.selectedIndex].value + '&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&mosaicurl=$mosaicurl', '_top')\" name=\"subnet\">\n";
 			echo "\t\t\t<option value=\"$subnet\" SELECTED>$subnet</option>\n";
 			foreach ($subnets as $subnet_option) {
 				print "\t\t\t<option value=\"$subnet_option\">$subnet_option</option>\n";
@@ -180,7 +184,7 @@ $mosaicurl = urlencode($mosaicurl);
 	</li>
   	<li class="subnetlink">
 		<?php
-			echo "<a title=\"Jump to the next subnet along the arc, same time period\" href=\"$scriptname?subnet=$nextSubnet&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&mosaicurl=$mosaicurl\">&#9660 $nextSubnet<a/>\n";
+			echo "<a title=\"Jump to the next subnet along the arc, same time period\" href=\"$scriptname?subnet=$nextSubnet&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&mosaicurl=$mosaicurl\">&#9660 $nextSubnet</a>\n";
 		?>
 	</li>
   	<li>
@@ -318,11 +322,17 @@ $mosaicurl = urlencode($mosaicurl);
 
 				# Here is the colorbar button
 				echo "<a class=\"button\" href=\"#\" onclick=\"toggle_visibility('colorbar');\">Toggle colorbar</a>";
+				
+				# About
+				printf("<a class=\"button\" href=\"https://docs.google.com/a/alaska.edu/document/d/1LoxEzHXHV9b5wB6Q8V_-y3IDV1pDTUXd8THeiTzHO7M/edit\" target=\"googledocs\">About</a>\n"); 
+
+				# Feedback/Bugs
+				printf("<a class=\"button\" href=\"https://docs.google.com/a/alaska.edu/document/d/1RdLB_NxRzJVXvjvckElcvRC-TeAv6yvJWhuWRpQwr_E/edit\" target=\"googledocs\">Feedback</a>\n"); 
 
 				# Diagnostic data		
 				$sgramtxtfile = str_replace("png", "txt", $sgram);
 				if ( file_exists($sgramtxtfile) ) {
-					printf("<a class=\"button\" href=$sgramtxtfile>Diagnostic data</a>\n"); 
+					printf("<a class=\"button\" href=$sgramtxtfile target=\"diagnostics\">Diagnostics</a>\n"); 
 				};
 
 			echo "</td>\n";
