@@ -45,6 +45,12 @@ $mosaicurl = urlencode($mosaicurl);
 		$hour = $_REQUEST['hour'];
 		$minute = $_REQUEST['minute']; 
 		$minute = floorminute($minute);
+		$second = !isset($_REQUEST['second'])? 0 : $_REQUEST['second'];	
+
+		if ($minute != $_REQUEST['minute'] || $second > 0) { # rounded down
+			list ($year, $month, $day, $hour, $minute, $secs) = addSeconds($year, $month, $day, $hour, $minute, 0, 600);
+			$minute=floorminute($minute);
+		}
 	
 		# For entry from the form, make sure it has correct number of digits
 		$year = mkNdigits($year, 4);

@@ -95,6 +95,8 @@ include('./includes/header.php');
 		print "<p>url = ".curPageURL()."</p>\n";
 		echo "<hr/>\n";
 	}
+
+	
 	
 	# Previous & Next subnets	
         list ($previousSubnet, $nextSubnet) = findprevnextsubnets($subnet, $subnets);
@@ -106,6 +108,9 @@ include('./includes/header.php');
         list ($nyear, $nmonth, $nday, $nhour, $nminute, $nsecs) = addSeconds($year, $month, $day, $hour, $minute, 0, $numseconds);
         $nminute=floorminute($nminute);
 ?>	
+
+<a name="top"></a>
+
 
 <!-- Create a menu across the top -->
 <div id="nav">
@@ -303,7 +308,7 @@ document.title = "<?php echo $title;?>";
 <script language="Javascript" src="includes/hitcounter_unique.php?page=mosaicMaker"><!--
 //--></script>
 
-
+<a href="#top">Top</a>
 
 </body>
 </html>
