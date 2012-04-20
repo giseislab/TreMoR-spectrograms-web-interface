@@ -364,6 +364,23 @@ $mosaicurl = urlencode($mosaicurl);
 					printf("<a class=\"button\" href=$sgramtxtfile target=\"diagnostics\">Diagnostics</a>\n"); 
 				};
 
+				# VALVE link
+				#$waveformurl = "waveforms.php";	
+        			#$netstachanarray = explode(",", $stachanlist);
+        			#foreach ($netstachanarray as $netstachan) {
+                			#list ($net, $sta, $chan) = explode(".", $netstachan);
+                			#$stationlist .= "selectedStation.0=".$sta."%20".$chan."%20".$net."&ch.0=".$sta."$".$chan."$".$net;
+				#$waveformurl = "http://avosouth.wr.usgs.gov/valve3.4/valve3.jsp?a=plot&o=png&tz=GMT&w=900&h=780&n=1&x.0=75&y.0=20&w.0=750&h.0=240&mh.0=900&chCnt.0=3&src.0=avo_seismic_winston_waveforms&st.0=20120417100000000&et.0=20120417101000599&lg.0=true&ch.0=109,78,203&dataTypes.0=1921.000000&plotType.0=wf&sdt.0=&ysLMin.0=Auto&ysLMax.0=Auto&despike_period.0=&filter_arg1.0=&filter_arg2.0=&debias_period.0=&despike.0=F&detrend.0=F&dmo_fl.0=0&dmo_db.0=0&spminf.0=0.0&spmaxf.0=15.0&splp.0=T&splf.0=F&plotSeparately.0=false";	
+				#$endtime = mktime($hour, $minute, $secs, $month, $day, $year);	
+				#$starttime = mktime($phour, $pminute, $psecs, $pmonth, $pday, $pyear);	
+				#$waveformurl .= "?starttime=$starttime&endtime=$endtime"; 
+				$endtime = $year.$month.$day.$hour.$minute."00000";	
+				$starttime = $pyear.$pmonth.$pday.$phour.$pminute."00000";	
+				#$waveformurl = "http://avosouth.wr.usgs.gov/valve3.4/valve3.jsp?a=plot&o=png&tz=GMT&w=900&h=780&n=1&x.0=75&y.0=20&w.0=750&h.0=240&mh.0=900&chCnt.0=3&src.0=avo_seismic_winston_waveforms&st.0=$starttime&et.0=$endtime&lg.0=true&ch.0=109,78,203&dataTypes.0=1921.000000&plotType.0=wf&sdt.0=&ysLMin.0=Auto&ysLMax.0=Auto&despike_period.0=&filter_arg1.0=&filter_arg2.0=&debias_period.0=&despike.0=F&detrend.0=F&dmo_fl.0=0&dmo_db.0=0&spminf.0=0.0&spmaxf.0=15.0&splp.0=T&splf.0=F&plotSeparately.0=false";	
+				$waveformurl = "http://avosouth.wr.usgs.gov/valve3.4/valve3.jsp?a=plot&o=png&tz=GMT&w=900&h=780&n=1&x.0=75&y.0=20&w.0=750&h.0=240&mh.0=900&chCnt.0=3&src.0=avo_seismic_winston_waveforms&st.0=$starttime&et.0=$endtime&lg.0=true&ch.0=RSO\$EHZ\$AV,REF\$EHZ\$AV,RED\$EHZ\$AV&dataTypes.0=1921.000000&plotType.0=wf&sdt.0=&ysLMin.0=Auto&ysLMax.0=Auto&despike_period.0=&filter_arg1.0=&filter_arg2.0=&debias_period.0=&despike.0=F&detrend.0=F&dmo_fl.0=0&dmo_db.0=0&spminf.0=0.0&spmaxf.0=15.0&splp.0=T&splf.0=F&plotSeparately.0=false";	
+	#printf("$waveformurl\n");
+				#printf("<a class=\"button\" href=$waveformurl target=\"waveforms\">Waveform</a>\n"); 
+
 			echo "</td>\n";
 			echo "</tr>\n";
 
