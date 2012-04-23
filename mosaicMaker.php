@@ -308,7 +308,7 @@ document.title = "<?php echo $title;?>";
 <script language="Javascript" src="includes/hitcounter_unique.php?page=mosaicMaker"><!--
 //--></script>
 
-<a class="button" href="#top">Top</a>
+<a class="button" href="#top" style="float:right;">Top</a>
 
 </body>
 </html>

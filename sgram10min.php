@@ -356,7 +356,7 @@ $mosaicurl = urlencode($mosaicurl);
 				printf("<a class=\"button\" href=\"https://docs.google.com/a/alaska.edu/document/d/1LoxEzHXHV9b5wB6Q8V_-y3IDV1pDTUXd8THeiTzHO7M/edit\" target=\"googledocs\">About</a>\n"); 
 
 				# Feedback/Bugs
-				printf("<a class=\"button\" href=\"https://docs.google.com/a/alaska.edu/document/d/1RdLB_NxRzJVXvjvckElcvRC-TeAv6yvJWhuWRpQwr_E/edit\" target=\"googledocs\">Feedback</a>\n"); 
+				#printf("<a class=\"button\" href=\"https://docs.google.com/a/alaska.edu/document/d/1RdLB_NxRzJVXvjvckElcvRC-TeAv6yvJWhuWRpQwr_E/edit\" target=\"googledocs\">Feedback</a>\n"); 
 
 				# Diagnostic data		
 				$sgramtxtfile = str_replace("png", "txt", $sgram);
