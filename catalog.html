@@ -1,0 +1,450 @@
+<!DOCTYPE html PUBLIC  "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<link rel="shortcut icon" href="/favico.ico" /><link rel="stylesheet" media="print" href="http://www.avo.alaska.edu/includes/notable_print.css" />
+
+<link rel="stylesheet" media="screen" href="http://www.avo.alaska.edu/includes/css_general.css" />
+
+<script type="text/javascript" src="http://www.avo.alaska.edu/includes/js/jquery.js"></script>
+
+<script type="text/javascript" src="http://www.avo.alaska.edu/includes/notable.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function(){$("ul.sfm").superfish();});
+
+</script><!-- Put any extra css/js here -->
+
+<link rel="stylesheet" media="screen" href="https://www.avo.alaska.edu/admin/catalog/form.css" />
+
+<title></title>
+
+<script type="text/javascript" src="catalog.js"></script>
+
+</head>
+
+<body>
+
+
+<div class="info">
+
+	<div id="results">
+
+		<div class="info_header mediumpurple">AVO Catalog Search Results</div>
+
+		<iframe name="resultsFrame" id="resultsFrame" onload="resizeResultsFrame()"><H1>Loading...</H1></iframe>
+
+	</div>
+
+        <div class="info_header mediumpurple">Alaska Earthquake Catalog Search</div>
+
+        <div class="info_body lightblue">
+
+		<div class="spacer">&nbsp;</div>
+
+		<div id="stylized" class="myform">
+
+<form id="form" name="form" method="get" action="catalogResults.php" target="resultsFrame" onsubmit="return showResultsFrame();">
+
+<h1>Alaska Earthquake Catalog Search</h1>
+
+<fieldset>
+
+	<legend>When</legend>
+
+	<label for=from>From
+
+	<span class="small">yyyy/mm/dd[/hh:mm]</span>
+
+	</label>
+
+	<input type=text name=from id=from />
+
+
+
+	<label for=to>To
+
+	<span class="small">yyyy/mm/dd[/hh:mm]</span>
+
+	</label>
+
+	<input type="text" name=to id=to />
+
+</fieldset>
+
+<fieldset>
+
+	<legend>Where</legend>
+
+	<label for=lat>Latitude interval
+
+	<span class="small">d[:m[:s]],d[:m[:s]]</span>
+
+	</label>
+
+	<input type="text" name=lat id=lat />
+
+
+
+	<label for=lon>Longitude interval
+
+	<span class="small">d[:m[:s]],d[:m[:s]]</span>
+
+	</label>
+
+	<input type="text" name=lon id=lon />
+
+
+
+	<label for=depth>Depth interval
+
+	<span class="small">min,max</span>
+
+	</label>
+
+	<input type="text" name=depth id=depth />
+
+
+
+	<label for=mag>Magnitude interval
+
+	<span class="small">min,max</span>
+
+	</label>
+
+	<input type="text" name=mag id=mag />
+
+
+
+	<label for=volcano>Volcano
+
+	</label>
+
+	<select name=volcano id=volcano onchange="toggleRadius()">
+
+		<OPTION VALUE="" SELECTED>Any</OPTION>
+<OPTION VALUE="51.9905,-176.5852">Adagdak</OPTION>
+<OPTION VALUE="54.13308,-165.98555">Akutan</OPTION>
+<OPTION VALUE="58.1573,-155.4">Alagogshak</OPTION>
+<OPTION VALUE="55.41728,-163.14687">Amak</OPTION>
+<OPTION VALUE="51.8475,179.82972">Amchixtam Chaxsxii</OPTION>
+<OPTION VALUE="52.49419,-171.25476">Amukta</OPTION>
+<OPTION VALUE="51.9689,-176.632">Andrew Bay volcano</OPTION>
+<OPTION VALUE="56.88149,-158.15456">Aniakchak</OPTION>
+<OPTION VALUE="52.38167,-174.16527">Atka</OPTION>
+<OPTION VALUE="59.3626,-153.435">Augustine</OPTION>
+<OPTION VALUE="58.04,-156.14">Basalt of Gertrude Creek</OPTION>
+<OPTION VALUE="55.3196,-131.051">Behm Canal-Rudyerd Bay</OPTION>
+<OPTION VALUE="56.5512,-158.787">Black Peak</OPTION>
+<OPTION VALUE="57.7051,-156.8467">Blue Mtn</OPTION>
+<OPTION VALUE="51.9072,-177.4409">Bobrof</OPTION>
+<OPTION VALUE="53.9272,-168.0344">Bogoslof</OPTION>
+<OPTION VALUE="61.4187,-141.7152">Bona-Churchill</OPTION>
+<OPTION VALUE="52.3488,175.909">Buldir</OPTION>
+<OPTION VALUE="64.0695,-148.422">Buzzard Creek</OPTION>
+<OPTION VALUE="62.4238,-144.1127">Capital</OPTION>
+<OPTION VALUE="52.8906,-170.0576">Carlisle</OPTION>
+<OPTION VALUE="52.5714,-171.1395">Chagulak</OPTION>
+<OPTION VALUE="57.13348,-156.99147">Chiginagak</OPTION>
+<OPTION VALUE="52.8222,-169.945">Cleveland</OPTION>
+<OPTION VALUE="58.58,-154.54">Cone 3110</OPTION>
+<OPTION VALUE="58.55,-154.51">Cone 3601</OPTION>
+<OPTION VALUE="55.64205,-161.21551">Dana</OPTION>
+<OPTION VALUE="51.9542,178.326">Davidof</OPTION>
+<OPTION VALUE="58.4173,-154.451">Denison</OPTION>
+<OPTION VALUE="58.4753,-154.3001">Devils Desk</OPTION>
+<OPTION VALUE="60.7194,-152.672">Double Glacier</OPTION>
+<OPTION VALUE="58.8596,-153.5351">Douglas</OPTION>
+<OPTION VALUE="62.1159,-144.6399">Drum</OPTION>
+<OPTION VALUE="56.4996,-133.102">Duncan Canal</OPTION>
+<OPTION VALUE="55.1867,-162.2744">Dutton</OPTION>
+<OPTION VALUE="52.3573,175.9475">East Cape volcano</OPTION>
+<OPTION VALUE="57.0509,-135.7611">Edgecumbe</OPTION>
+<OPTION VALUE="55.3409,-162.0726">Emmons Lake Volcanic Center</OPTION>
+<OPTION VALUE="66.3493,-164.333">Espenberg</OPTION>
+<OPTION VALUE="54.6692,-164.3524">Fisher</OPTION>
+<OPTION VALUE="58.41,-155.21">Folsoms Bluff</OPTION>
+<OPTION VALUE="58.7703,-153.6738">Fourpeaked</OPTION>
+<OPTION VALUE="55.0673,-162.8354">Frosty</OPTION>
+<OPTION VALUE="51.7892,-178.796">Gareloi</OPTION>
+<OPTION VALUE="54.2522,-165.6605">Gilbert</OPTION>
+<OPTION VALUE="62.1312,-143.0883">Gordon</OPTION>
+<OPTION VALUE="52.0765,-176.1109">Great Sitkin</OPTION>
+<OPTION VALUE="58.3572,-155.1037">Griggs</OPTION>
+<OPTION VALUE="61.5985,-152.42">Hayes</OPTION>
+<OPTION VALUE="52.741,-170.113">Herbert</OPTION>
+<OPTION VALUE="60.0319,-153.0918">Iliamna</OPTION>
+<OPTION VALUE="65.6,-163.92">Imuruk Lake</OPTION>
+<OPTION VALUE="61.43,-164.47">Ingakslugwat Hills</OPTION>
+<OPTION VALUE="61.525,-165.227">Ingrisarak Mtn</OPTION>
+<OPTION VALUE="58.64,-154.47">Iron Trig Cone</OPTION>
+<OPTION VALUE="54.76799,-163.72904">Isanotski</OPTION>
+<OPTION VALUE="56.5196,-130.331">Iskut-Unuk River Cones</OPTION>
+<OPTION VALUE="62.0233,-143.6201">Jarvis</OPTION>
+<OPTION VALUE="63.9665,-148.685">Jumbo Dome</OPTION>
+<OPTION VALUE="52.9726,-169.719">Kagamil</OPTION>
+<OPTION VALUE="58.6113,-154.0245">Kaguyak</OPTION>
+<OPTION VALUE="51.9242,-177.1623">Kanaga</OPTION>
+<OPTION VALUE="52.1693,-175.5113">Kasatochi</OPTION>
+<OPTION VALUE="58.279,-154.9533">Katmai</OPTION>
+<OPTION VALUE="58.053,-155.671">Kejulik</OPTION>
+<OPTION VALUE="51.9793,178.2756">Khvostof</OPTION>
+<OPTION VALUE="57.2019,-156.7467">Kialagvik</OPTION>
+<OPTION VALUE="52.1031,177.6035">Kiska</OPTION>
+<OPTION VALUE="62.0962,-145.0853">Klawasi Group</OPTION>
+<OPTION VALUE="58.59,-154.56">Knob 1000</OPTION>
+<OPTION VALUE="61.638,-164.414">Kochilagok Hill</OPTION>
+<OPTION VALUE="52.2189,-175.1323">Koniuji</OPTION>
+<OPTION VALUE="63.5991,-170.433">Kookooligit Mountains</OPTION>
+<OPTION VALUE="52.38167,-174.16527">Korovin</OPTION>
+<OPTION VALUE="65.65,-160.5">Koyuk-Buckland volcanics</OPTION>
+<OPTION VALUE="58.4528,-154.3573">Kukak</OPTION>
+<OPTION VALUE="56.0126,-159.7912">Kupreanof</OPTION>
+<OPTION VALUE="51.9531,178.5356">Little Sitkin</OPTION>
+<OPTION VALUE="58.1946,-155.2544">Mageik</OPTION>
+<OPTION VALUE="53.8899,-166.925">Makushin</OPTION>
+<OPTION VALUE="58.1692,-155.3566">Martin</OPTION>
+<OPTION VALUE="51.937,-176.741">Moffett</OPTION>
+<OPTION VALUE="60.45,-164.66">Nelson Island</OPTION>
+<OPTION VALUE="58.2654,-155.1591">Novarupta</OPTION>
+<OPTION VALUE="60.099,-166.496">Nunivak Island</OPTION>
+<OPTION VALUE="61.57,-164.91">Nushkolik Mountain volcanic field</OPTION>
+<OPTION VALUE="53.397,-168.166">Okmok</OPTION>
+<OPTION VALUE="55.4173,-161.8937">Pavlof</OPTION>
+<OPTION VALUE="55.4569,-161.8544">Pavlof Sister</OPTION>
+<OPTION VALUE="67.3,-142.7">Porcupine</OPTION>
+<OPTION VALUE="63.7196,-141.6223">Prindle Volcano</OPTION>
+<OPTION VALUE="58.5,-154.68">Rainbow River Cone</OPTION>
+<OPTION VALUE="53.1536,-168.5382">Recheshnoi</OPTION>
+<OPTION VALUE="60.4852,-152.7438">Redoubt</OPTION>
+<OPTION VALUE="54.7992,-163.5914">Roundtop</OPTION>
+<OPTION VALUE="62.2133,-144.1295">Sanford</OPTION>
+<OPTION VALUE="52.316,-172.51">Seguam</OPTION>
+<OPTION VALUE="52.0138,178.134">Segula</OPTION>
+<OPTION VALUE="51.9288,179.5977">Semisopochnoi</OPTION>
+<OPTION VALUE="52.0533,-174.9521">Sergief</OPTION>
+<OPTION VALUE="54.7554,-163.9711">Shishaldin</OPTION>
+<OPTION VALUE="62.3996,-143.132">Skookum Creek</OPTION>
+<OPTION VALUE="58.3336,-154.6859">Snowy</OPTION>
+<OPTION VALUE="61.2989,-152.2539">Spurr</OPTION>
+<OPTION VALUE="56.58,-169.63">St. George volcanic field</OPTION>
+<OPTION VALUE="63.4493,-162.123">St. Michael</OPTION>
+<OPTION VALUE="57.18,-170.3">St. Paul Island</OPTION>
+<OPTION VALUE="58.4301,-154.3903">Steller</OPTION>
+<OPTION VALUE="53.1465,-169.3793">Submarine 001</OPTION>
+<OPTION VALUE="53.2978,-169.7604">Submarine 002</OPTION>
+<OPTION VALUE="53.1198,-170.2279">Submarine 003</OPTION>
+<OPTION VALUE="52.9405,-171.4116">Submarine 004</OPTION>
+<OPTION VALUE="52.8012,-171.9246">Submarine 005</OPTION>
+<OPTION VALUE="52.7649,-171.8752">Submarine 006</OPTION>
+<OPTION VALUE="51.867,-178.027">Takawangha</OPTION>
+<OPTION VALUE="52.839,-169.758">Tana</OPTION>
+<OPTION VALUE="62.302,-143.506">Tanada Peak</OPTION>
+<OPTION VALUE="51.884,-178.143">Tanaga</OPTION>
+<OPTION VALUE="55.2496,-133.302">Tlevak Strait-Suemez Island</OPTION>
+<OPTION VALUE="59.27,-160.05">Togiak volcanics</OPTION>
+<OPTION VALUE="55.56377,-161.94523">Trader Mtn</OPTION>
+<OPTION VALUE="58.2343,-155.1026">Trident</OPTION>
+<OPTION VALUE="57.7503,-156.37">Ugashik-Peulik</OPTION>
+<OPTION VALUE="57.831,-156.512">Ukinrek Maars</OPTION>
+<OPTION VALUE="53.065,-169.767">Uliaga</OPTION>
+<OPTION VALUE="61.17,-164.25">Ungulungwak Hill-Ingrichuak Hill</OPTION>
+<OPTION VALUE="57.8338,-155.5139">Unnamed (near Ukinrek Maars)</OPTION>
+<OPTION VALUE="56.1979,-159.3931">Veniaminof</OPTION>
+<OPTION VALUE="55.8681,-160.0956">Volcano 1 near Kupreanof</OPTION>
+<OPTION VALUE="55.9125,-160.041">Volcano 2 near Kupreanof</OPTION>
+<OPTION VALUE="55.9292,-160.002">Volcano 3 near Kupreanof</OPTION>
+<OPTION VALUE="55.952,-159.958">Volcano 4 near Kupreanof</OPTION>
+<OPTION VALUE="53.1256,-168.6937">Vsevidof</OPTION>
+<OPTION VALUE="54.5171,-164.6476">Westdahl</OPTION>
+<OPTION VALUE="62.00572,-144.01935">Wrangell</OPTION>
+<OPTION VALUE="57.0179,-157.1864">Yantarni</OPTION>
+<OPTION VALUE="52.649,-170.659">Yunaska</OPTION>
+	</select>
+
+
+
+	<label for=radius>Radius
+
+	</label>
+
+	<input type="text" name=radius id=radius value="20" disabled />
+
+</fieldset>
+
+
+
+<fieldset>
+
+	<legend>Which</legend>
+
+	<label for=numObs>Number of observations interval
+
+	<span class="small">min,max</span>
+
+	</label>
+
+	<input type="text" name=numObs id=numObs />
+
+
+
+	<label for=magCount>Number of magnitude observations interval
+
+	<span class="small">min,max</span>
+
+	</label>
+
+	<input type="text" name=magCount id=magCount />
+
+
+
+	<label for=gap>Gap interval
+
+	<span class="small">min,max</span>
+
+	</label>
+
+	<input type="text" name=gap id=gap />
+
+
+
+	<label for=dist>Distance to nearest station interval
+
+	<span class="small">min,max</span>
+
+	</label>
+
+	<input type="text" name=dist id=dist />
+
+
+
+	<label for=rms>RMS interval
+
+	<span class="small">min,max</span>
+
+	</label>
+
+	<input type="text" name=rms id=rms />
+
+
+
+	<label for=timeErr>Time error interval
+
+	<span class="small">min,max</span>
+
+	</label>
+
+	<input type="text" name=timeErr id=timeErr />
+
+
+
+	<label for=horErr>Horizontal error interval
+
+	<span class="small">min,max</span>
+
+	</label>
+
+	<input type="text" name=horErr id=horErr />
+
+
+
+	<label for=depthErr>Depth error interval
+
+	<span class="small">min,max</span>
+
+	</label>
+
+	<input type="text" name=depthErr id=depthErr />
+
+
+
+	<label for=review>Review
+
+	</label>
+
+	<select name=review id=review>
+
+		<option value="A">Automatic solution</option>
+
+		<option value="F" SELECTED>Finalized solution</option>
+
+	</select>
+
+	<input type="hidden" value="selected" name="selectFlag" />
+
+</fieldset>
+
+
+
+<fieldset>
+
+	<legend>How</legend>
+
+	<label for=format>Format
+
+	</label>
+
+	<select name=format id=format>
+
+		<option value="summary">Summary readable text format</option>
+
+		<option value="seisan">Seisan S-files (zipped)</option>
+
+		<option value="datascope">Datascope CSS3.0 tables (zipped)</option>
+
+		<option value="volc2">VOLC2 XML format</option>
+
+		<option value="kml">Google Earth KML</option>
+
+	</select>
+
+
+
+	<label for=result>Results
+
+	</label>
+
+	<select name=result id=result>
+
+		<option value="display">Display</option>
+
+		<option value="download">Download</option>
+
+		<option value="print">Print</option>
+
+	</select>
+
+</fieldset>
+
+
+
+<center><button type=submit name=submit>Search</button></center>
+
+
+
+</form>
+
+<div class="spacer">&nbsp;</div>
+
+</div>
+
+		<div class="spacer">&nbsp;</div>
+
+	</div>
+
+</div>
+
+<!-- End Page Content -->
+
+<div class="clearer" style="margin-top:5px;height:5px;"></div>
+
+
+</div></body>
+
+</html>
+
