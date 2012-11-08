@@ -3,7 +3,7 @@
 # header files
 include('./includes/antelope.php');
 include('./includes/daysPerMonth.php');
-include('./includes/mosaicMakerTable.php');	
+include('./includes/diagnosticTable.php');	
 include('./includes/curPageURL.php');
 include('./includes/findprevnextsubnets.php');
 include('./includes/scriptname.php');
@@ -291,7 +291,7 @@ $MAXSUBNETLENGTH=10;
 <?php
 	if ($plotMosaic==1) {
 		#$title = mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $plotsPerRow, $WEBPLOTS);
-		$title = mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $plotsPerRow, $WEBPLOTS, $thumbs, 1);
+		$title = diagnosticTable($subnet, $year, $month, $day, $hour, $minute, $numhours, $plotsPerRow, $WEBPLOTS, $thumbs, 1);
 	}
 	else
 	{

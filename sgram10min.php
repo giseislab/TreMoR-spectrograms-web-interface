@@ -22,7 +22,7 @@ include('./includes/header.php');
  
 $mosaicurl = !isset($_REQUEST['mosaicurl'])? "" : $_REQUEST['mosaicurl'];	
 $mosaicurl = urlencode($mosaicurl);
-
+$MAXSUBNETLENGTH=10;
 
 ?>
 
@@ -174,23 +174,23 @@ $mosaicurl = urlencode($mosaicurl);
 	<li title="Toggle menu to reselect time period based on absolute start time and number of hours" onClick="toggle_visibility('menu_absolutetime')">Absolute time</li>
   	<li class="subnetlink">
 		<?php
-			echo "<a title=\"Jump to the previous subnet along the arc, same time period\" href=\"$scriptname?subnet=$previousSubnet&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&mosaicurl=$mosaicurl\">&#9650 $previousSubnet</a>\n";
+			echo "<a title=\"Jump to the previous subnet along the arc, same time period\" href=\"$scriptname?subnet=$previousSubnet&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&mosaicurl=$mosaicurl\">&#9650 ".substr($previousSubnet,0,$MAXSUBNETLENGTH)."</a>\n";
 		?>
 	</li>
   	<li class="subnetpulldown">
 		<?php
 			# Subnet widgit
                   	echo "<select title=\"Jump to a different subnet\" onchange=\"window.open('?subnet=' + this.options[this.selectedIndex].value + '&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&mosaicurl=$mosaicurl', '_top')\" name=\"subnet\">\n";
-			echo "\t\t\t<option value=\"$subnet\" SELECTED>$subnet</option>\n";
+			echo "\t\t\t<option value=\"$subnet\" SELECTED>".substr($subnet,0,$MAXSUBNETLENGTH)."</option>\n";
 			foreach ($subnets as $subnet_option) {
-				print "\t\t\t<option value=\"$subnet_option\">$subnet_option</option>\n";
+				print "\t\t\t<option value=\"$subnet_option\">".substr($subnet_option,0,$MAXSUBNETLENGTH)."</option>\n";
 			}
 			print "\t\t</select>\n";
 		?>
 	</li>
   	<li class="subnetlink">
 		<?php
-			echo "<a title=\"Jump to the next subnet along the arc, same time period\" href=\"$scriptname?subnet=$nextSubnet&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&mosaicurl=$mosaicurl\">&#9660 $nextSubnet</a>\n";
+			echo "<a title=\"Jump to the next subnet along the arc, same time period\" href=\"$scriptname?subnet=$nextSubnet&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&mosaicurl=$mosaicurl\">&#9660 ".substr($nextSubnet,0,$MAXSUBNETLENGTH)."</a>\n";
 		?>
 	</li>
   	<li>

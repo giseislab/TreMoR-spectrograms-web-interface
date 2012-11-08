@@ -1,5 +1,40 @@
 <?php
-function mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $plotsPerRow, $WEBPLOTS, $thumbs, $includeHeader) {
+
+function loadsummaryfile($summaryfile) {
+	ini_set("auto_detect_line_endings", true);
+	$stachans = array();
+	$percentages = array();
+	$handle = @fopen($summaryfile, "r");
+	if ($handle) {
+    		while (($buffer = fgets($handle, 4096)) !== false) {
+			$line = rtrim($buffer);
+			if (preg_match('"^.*modefreq.*$"', $line, $matches)) {
+				$fields = explode(",", $matches[0]);
+				array_push($stachans, $fields[1]);
+				array_push($percentages, preg_replace('"got"','', $fields[2]));
+			}
+
+		}
+    	}
+    	if (!feof($handle)) {
+        	echo "Error: unexpected fgets() fail\n";
+    	}
+    	fclose($handle);
+	return array($stachans, $percentages);
+}
+
+function summarymessage($stachans, $percentages) {
+	$summarymessage = "<table border=1>";
+	#foreach ($stachans as $stachan) {
+	foreach ($percentages as $percentage) {
+		#$summarymessage .= "<tr><td>$stachan</td></tr>\n";
+		$summarymessage .= "<tr><td>$percentage</td></tr>\n";
+	}
+	$summarymessage .= "</table>\n";
+	return $summarymessage;
+}
+
+function diagnosticTable($subnet, $year, $month, $day, $hour, $minute, $numhours, $plotsPerRow, $WEBPLOTS, $includeHeader) {
 	$timenow = now(); #################### KISKA TIME #########################
 
         # generate the epoch time for the start date/time requested
@@ -36,7 +71,7 @@ function mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $p
 		
 	}
 
-	echo "<table class=\"center\">\n";
+	echo "<table class=\"center\" border=1>\n";
 
 	$c = 0;
 	$latestAge = "?";
@@ -67,8 +102,6 @@ function mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $p
 		if ($oldhhmm == "") {
 			$oldhhmm = $rowstarthhmm." - ";
 		}	
-		# Set the link to the big image file
-		$sgramphplink = "sgram10min.php?year=$year&month=$month&day=$day&hour=$hour&minute=$floorminute&subnet=$subnet&mosaicurl=".urlencode(curPageURL());
 
 		# work out age of this latest data in this image
 		if (($timenow - $time) < 24*60*60) {
@@ -100,22 +133,15 @@ function mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $p
 		}
 
 		# CELL STARTS HERE 			
-		#$small_sgram = "$WEBPLOTS/sp/$subnet/$year/$month/$day/small_$timestamp.png";
-		$small_sgram = "$WEBPLOTS/sp/$subnet/$year/$month/$day/$thumbs"."_$timestamp.png";
-		$big_sgram = "$WEBPLOTS/sp/$subnet/$year/$month/$day/$timestamp.png";
-		if (file_exists($small_sgram)) {
+		$summaryfile = "$WEBPLOTS/sp/$subnet/$year/$month/$day/$timestamp.txt";
+		if (file_exists($summaryfile)) {
+			list($stachans, $percentages) = loadsummaryfile($summaryfile);
+			$summarymessage = summarymessage($stachans, $percentages);
 			$latestAge = $ageStr;
-			echo "<td title=\"$oldhhmm$hhmm\" class=\"tdimg\"><a href=$sgramphplink><img src=$small_sgram></a></td>\n";
+			#echo "<td title=\"$oldhhmm$hhmm\" class=\"tdimg\"><a href=$summaryfile target=\"diagnostic\">$summarymessage</a></td>\n";
+			echo "<td title=\"$oldhhmm$hhmm\" ><a href=$summaryfile target=\"diagnostic\">$summarymessage</a></td>\n";
 		} else {
-			if (file_exists($big_sgram)) {
-				if (filesize($big_sgram)==0) {
-					echo "<td title=\"NO SGRAM means that an attempt was made to load some data for this timeperiod, but a valid spectrogram has not been produced. There was probably a data error - or the spectrogram is being generated now.\" class=\"tdimg\"><a href=$sgramphplink><img src=\"$WEBPLOTS/sp/nosgram_thumb.png\"></a></td>\n";
-				} else {
-					echo "<td title=\"SMALL SGRAM means that a spectrogram image file was produced, but a thumbnail was not produced. There was probably a data error.\" class=\"tdimg\"><a href=$sgramphplink><img src=\"$WEBPLOTS/sp/smallsgram_thumb.png\"></a></td>\n";
-				}
-			} else {
-				echo "<td title=\"NO DATA means either this time window has not yet been processed, or no data were available from the datasources tried\" class=\"tdimg\"><a href=$sgramphplink><img src=\"$WEBPLOTS/sp/nodata_thumb.png\"></a></td>\n";
-			}
+			echo "<td title=\"$oldhhmm$hhmm\">NO DATA</td>\n";
 		}
 
 		# CELL ENDS HERE
