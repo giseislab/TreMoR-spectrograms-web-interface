@@ -4,14 +4,24 @@ function loadsummaryfile($summaryfile) {
 	ini_set("auto_detect_line_endings", true);
 	$stachans = array();
 	$percentages = array();
+	$bitranges = array();
+	$modefractions = array();
+	$numuniquevalues = array();
 	$handle = @fopen($summaryfile, "r");
 	if ($handle) {
     		while (($buffer = fgets($handle, 4096)) !== false) {
 			$line = rtrim($buffer);
-			if (preg_match('"^.*modefreq.*$"', $line, $matches)) {
+			if (preg_match('"^.*numuniquevals.*$"', $line, $matches)) {
 				$fields = explode(",", $matches[0]);
-				array_push($stachans, $fields[1]);
+				array_push($stachans, preg_replace('"stachan"','', $fields[1]));
 				array_push($percentages, preg_replace('"got"','', $fields[2]));
+				array_push($bitranges, preg_replace('"bitrange"','', $fields[3]));
+			}
+			if (preg_match('"^.*MODE-FRACTION.*$"', $line, $matches)) {
+				$fields = explode(" ", $matches[0]);
+				array_push($modefractions, preg_replace('"MODE-FRACTION:"','', $fields[4]));
+				#array_push($modefractions, $fields[4]);
+				array_push($numuniquevalues, ceil(log(preg_replace('"UNIQUE-VALUES:"','', $fields[5]),2))  );
 			}
 
 		}
@@ -20,20 +30,28 @@ function loadsummaryfile($summaryfile) {
         	echo "Error: unexpected fgets() fail\n";
     	}
     	fclose($handle);
-	return array($stachans, $percentages);
+	return array($stachans, $percentages, $bitranges, $modefractions, $numuniquevalues);
 }
 
-function summarymessage($stachans, $percentages) {
-	$summarymessage = "<table border=1>";
+function summarymessage($stachans, $percentages, $bitranges, $modefractions, $numuniquevalues) {
+	#$summarymessage = "<table border=1>";
 	#foreach ($stachans as $stachan) {
-	foreach ($percentages as $percentage) {
-		#$summarymessage .= "<tr><td>$stachan</td></tr>\n";
-		$summarymessage .= "<tr><td>$percentage</td></tr>\n";
+	$numchans = count($stachans);
+	for ($c=0; $c<$numchans; $c++) {
+		$summarymessage .= $percentages[$c].$bitranges[$c]." ".$numuniquevalues[$c]." ".($modefractions[$c]*100)."%<br/>\n";
 	}
-	$summarymessage .= "</table>\n";
+	#$summarymessage .= "</table>\n";
 	return $summarymessage;
 }
 
+function summarystations($stachans) {
+	$numchans = count($stachans);
+	for ($c=0; $c<$numchans; $c++) {
+		$summarymessage .= $stachans[$c]."<br/>\n";
+	}
+	#$summarymessage .= "</table>\n";
+	return $summarymessage;
+}
 function diagnosticTable($subnet, $year, $month, $day, $hour, $minute, $numhours, $plotsPerRow, $WEBPLOTS, $includeHeader) {
 	$timenow = now(); #################### KISKA TIME #########################
 
@@ -129,19 +147,20 @@ function diagnosticTable($subnet, $year, $month, $day, $hour, $minute, $numhours
 			} else {
 				$firstRow = 0;
 			}
-			echo "<tr><td title=\"Start time for this row (UTC). Local time is $rowstartlocalhhmm\">$rowstarthhmm</td>\n";
+			$summarymessage = summarystations($stachans);
+			echo "<tr><td height=198 title=\"Start time for this row (UTC). Local time is $rowstartlocalhhmm\">$rowstarthhmm</td><td>$summarymessage</td>\n";
 		}
 
 		# CELL STARTS HERE 			
 		$summaryfile = "$WEBPLOTS/sp/$subnet/$year/$month/$day/$timestamp.txt";
 		if (file_exists($summaryfile)) {
-			list($stachans, $percentages) = loadsummaryfile($summaryfile);
-			$summarymessage = summarymessage($stachans, $percentages);
+			list($stachans, $percentages, $bitranges, $modefractions, $numuniquevalues) = loadsummaryfile($summaryfile);
+			$summarymessage = summarymessage($stachans, $percentages, $bitranges, $modefractions, $numuniquevalues);
 			$latestAge = $ageStr;
-			#echo "<td title=\"$oldhhmm$hhmm\" class=\"tdimg\"><a href=$summaryfile target=\"diagnostic\">$summarymessage</a></td>\n";
-			echo "<td title=\"$oldhhmm$hhmm\" ><a href=$summaryfile target=\"diagnostic\">$summarymessage</a></td>\n";
+			#echo "<td width=151 title=\"$oldhhmm$hhmm\" class=\"tdimg\"><a href=$summaryfile target=\"diagnostic\">$summarymessage</a></td>\n";
+			echo "<td width=151 title=\"$oldhhmm$hhmm\" ><a href=$summaryfile target=\"diagnostic\">$summarymessage</a></td>\n";
 		} else {
-			echo "<td title=\"$oldhhmm$hhmm\">NO DATA</td>\n";
+			echo "<td width=151 title=\"$oldhhmm$hhmm\">NO DATA</td>\n";
 		}
 
 		# CELL ENDS HERE
@@ -153,7 +172,7 @@ function diagnosticTable($subnet, $year, $month, $day, $hour, $minute, $numhours
 			date_default_timezone_set('US/Alaska');
 			$localtime = localtime($floorepochUTC,true); # Cannot just use time (see above vairable) here since it is now "floored"
 			$rowendlocalhhmm = sprintf("%4d/%02d/%02d %02d:%02d",$localtime[tm_year]+1900,$localtime[tm_mon]+1,$localtime[tm_mday],$localtime[tm_hour],$localtime[tm_min]); 
-			echo "<td title=\"End time for this row (UTC). Local time is $rowendlocalhhmm\">$hhmm</td>\n";
+			echo "<td height=198 title=\"End time for this row (UTC). Local time is $rowendlocalhhmm\">$hhmm</td>\n";
 			$rowFinished = 1;
 
 		}
