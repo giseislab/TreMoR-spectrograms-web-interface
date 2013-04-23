@@ -10,12 +10,9 @@ include('./includes/scriptname.php');
 include('./includes/factorize.php');
 
 # Standard XHTML header
-#$subnet = !isset($_REQUEST['subnet'])? $subnets[0] : $_REQUEST['subnet'];
-$subnet = !isset($_REQUEST['subnet'])? "LittleSitkin" : $_REQUEST['subnet'];
+$subnet = !isset($_REQUEST['subnet'])? $subnets[0] : $_REQUEST['subnet'];
 $thumbs = !isset($_REQUEST['thumbs'])? "small" : $_REQUEST['thumbs'];
 $page_title = "$subnet Spectrogram Mosaic";
-#$css = array( "css/reset2.css", "http://www.avo.alaska.edu/includes/admin/admin_test.css", "css/newspectrograms.css", "css/mosaicMaker.css" );
-#$css = array( "http://www.avo.alaska.edu/includes/admin/admin_test.css", "css/newspectrograms.css", "css/mosaicMaker.css" );
 $css = array( "css/newspectrograms.css", "css/mosaicMaker.css" );
 $googlemaps = 0;
 $js = array('toggle_menus.js', 'toggle_visibility.js');

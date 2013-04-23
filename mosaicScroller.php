@@ -10,10 +10,7 @@ include('./includes/scriptname.php');
 include('./includes/factorize.php');
 
 # Standard XHTML header
-#$subnet = !isset($_REQUEST['subnet'])? $subnets[0] : $_REQUEST['subnet'];
-#$subnet = !isset($_REQUEST['subnet'])? "LittleSitkin" : $_REQUEST['subnet'];
-$subnetsToUse = !isset($_REQUEST['subnetsToUse'])? array("LittleSitkin") : $_REQUEST['subnetsToUse'];
-#$subnetsToUse = array("LittleSitkin");
+$subnetsToUse = !isset($_REQUEST['subnetsToUse'])? array("Spurr") : $_REQUEST['subnetsToUse'];
 $thumbs = !isset($_REQUEST['thumbs'])? "small" : $_REQUEST['thumbs'];
 $page_title = "Spectrogram Mosaic Scroller";
 $css = array( "css/newspectrograms.css", "css/mosaicMaker.css", "css/select_multiple" );

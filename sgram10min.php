@@ -13,8 +13,6 @@ include('./includes/sgramfilename2parts.php');
 # Standard XHTML header
 #$subnet = !isset($_REQUEST['subnet'])? $subnets[0] : $_REQUEST['subnet'];
 $page_title = "$subnet Spectrogram";
-#$css = array( "css/reset2.css", "http://www.avo.alaska.edu/includes/admin/admin_test.css", "css/newspectrograms.css", "css/sgram10min.css" );
-#$css = array( "http://www.avo.alaska.edu/includes/admin/admin_test.css", "css/newspectrograms.css", "css/sgram10min.css" );
 $css = array( "css/newspectrograms.css", "css/sgram10min.css" );
 $googlemaps = 0;
 $js = array('toggle_menus.js', 'toggle_visibility.js');
