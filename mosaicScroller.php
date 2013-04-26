@@ -16,7 +16,12 @@ include('./includes/curPageURL.php');
 include('./includes/scriptname.php');
 include('./includes/factorize.php');
 
+<<<<<<< HEAD
 $subnetsToUse = !isset($_REQUEST['subnetsToUse'])? $subnets[0] : $_REQUEST['subnetsToUse'];
+=======
+# Standard XHTML header
+$subnetsToUse = !isset($_REQUEST['subnetsToUse'])? array("Spurr") : $_REQUEST['subnetsToUse'];
+>>>>>>> cbceb83525dc3d06176878b2e4d7dd791e97b921
 $thumbs = !isset($_REQUEST['thumbs'])? "small" : $_REQUEST['thumbs'];
 ?>
 

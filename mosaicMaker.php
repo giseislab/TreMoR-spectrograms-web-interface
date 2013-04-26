@@ -16,6 +16,17 @@ include('./includes/findprevnextsubnets.php');
 include('./includes/scriptname.php');
 include('./includes/factorize.php');
 
+<<<<<<< HEAD
+=======
+# Standard XHTML header
+$subnet = !isset($_REQUEST['subnet'])? $subnets[0] : $_REQUEST['subnet'];
+$thumbs = !isset($_REQUEST['thumbs'])? "small" : $_REQUEST['thumbs'];
+$page_title = "$subnet Spectrogram Mosaic";
+$css = array( "css/newspectrograms.css", "css/mosaicMaker.css" );
+$googlemaps = 0;
+$js = array('toggle_menus.js', 'toggle_visibility.js');
+include('./includes/header.php');
+>>>>>>> cbceb83525dc3d06176878b2e4d7dd791e97b921
 $MAXSUBNETLENGTH=10;
 $subnet = !isset($_REQUEST['subnet'])? $subnets[0] : $_REQUEST['subnet'];
 $thumbs = !isset($_REQUEST['thumbs'])? "small" : $_REQUEST['thumbs'];
