@@ -267,11 +267,6 @@ $thumbs = !isset($_REQUEST['thumbs'])? "small" : $_REQUEST['thumbs'];
 	}
 ?>
 
-<script language="Javascript" src="includes/hitcounter.php?page=mosaicScroller"><!--
-//--></script>
-<script language="Javascript" src="includes/hitcounter_unique.php?page=mosaicScroller"><!--
-//--></script>
-
 <a class="button" href="#top" style="float:right;">Top</a>
 
 </body>
