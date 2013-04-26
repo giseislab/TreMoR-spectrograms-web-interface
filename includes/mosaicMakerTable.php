@@ -100,21 +100,20 @@ function mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $p
 		}
 
 		# CELL STARTS HERE 			
-		#$small_sgram = "$WEBPLOTS/sp/$subnet/$year/$month/$day/small_$timestamp.png";
-		$small_sgram = "$WEBPLOTS/sp/$subnet/$year/$month/$day/$thumbs"."_$timestamp.png";
-		$big_sgram = "$WEBPLOTS/sp/$subnet/$year/$month/$day/$timestamp.png";
+		$small_sgram = "$WEBPLOTS/$subnet/$year/$month/$day/$thumbs"."_$timestamp.png";
+		$big_sgram = "$WEBPLOTS/$subnet/$year/$month/$day/$timestamp.png";
 		if (file_exists($small_sgram)) {
 			$latestAge = $ageStr;
 			echo "<td title=\"$oldhhmm$hhmm\" class=\"tdimg\"><a href=$sgramphplink><img src=$small_sgram></a></td>\n";
 		} else {
 			if (file_exists($big_sgram)) {
 				if (filesize($big_sgram)==0) {
-					echo "<td title=\"NO SGRAM means that an attempt was made to load some data for this timeperiod, but a valid spectrogram has not been produced. There was probably a data error - or the spectrogram is being generated now.\" class=\"tdimg\"><a href=$sgramphplink><img src=\"$WEBPLOTS/sp/nosgram_thumb.png\"></a></td>\n";
+					echo "<td title=\"NO SGRAM means that an attempt was made to load some data for this timeperiod, but a valid spectrogram has not been produced. There was probably a data error - or the spectrogram is being generated now.\" class=\"tdimg\"><a href=$sgramphplink><img src=\"$WEBPLOTS/nosgram_thumb.png\"></a></td>\n";
 				} else {
-					echo "<td title=\"SMALL SGRAM means that a spectrogram image file was produced, but a thumbnail was not produced. There was probably a data error.\" class=\"tdimg\"><a href=$sgramphplink><img src=\"$WEBPLOTS/sp/smallsgram_thumb.png\"></a></td>\n";
+					echo "<td title=\"SMALL SGRAM means that a spectrogram image file was produced, but a thumbnail was not produced. There was probably a data error.\" class=\"tdimg\"><a href=$sgramphplink><img src=\"$WEBPLOTS/smallsgram_thumb.png\"></a></td>\n";
 				}
 			} else {
-				echo "<td title=\"NO DATA means either this time window has not yet been processed, or no data were available from the datasources tried\" class=\"tdimg\"><a href=$sgramphplink><img src=\"$WEBPLOTS/sp/nodata_thumb.png\"></a></td>\n";
+				echo "<td title=\"NO DATA means either this time window has not yet been processed, or no data were available from the datasources tried\" class=\"tdimg\"><a href=$sgramphplink><img src=\"$WEBPLOTS/nodata_thumb.png\"></a></td>\n";
 			}
 		}
 

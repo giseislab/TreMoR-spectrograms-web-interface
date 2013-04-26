@@ -152,7 +152,7 @@ function diagnosticTable($subnet, $year, $month, $day, $hour, $minute, $numhours
 		}
 
 		# CELL STARTS HERE 			
-		$summaryfile = "$WEBPLOTS/sp/$subnet/$year/$month/$day/$timestamp.txt";
+		$summaryfile = "$WEBPLOTS/$subnet/$year/$month/$day/$timestamp.txt";
 		if (file_exists($summaryfile)) {
 			list($stachans, $percentages, $bitranges, $modefractions, $numuniquevalues) = loadsummaryfile($summaryfile);
 			$summarymessage = summarymessage($stachans, $percentages, $bitranges, $modefractions, $numuniquevalues);

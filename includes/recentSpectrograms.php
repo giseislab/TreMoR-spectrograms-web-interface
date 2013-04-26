@@ -8,8 +8,7 @@ function recentSpectrograms($subnet, $WEBPLOTS, $MINFILES, $MAXDAYS)
 	do {
 		list ($year, $month, $day, $hour, $minute) = epoch2YmdHM($time);
 		$minute = floorminute($minute);
-		#$filepath = "$WEBPLOTSPATH/sp/$subnet/$year/$month/$day/2*.png";
-		$filepath = "$WEBPLOTS/sp/$subnet/$year/$month/$day/2*.png";
+		$filepath = "$WEBPLOTS/$subnet/$year/$month/$day/2*.png";
 		$thisarray = glob($filepath);
 		rsort($thisarray);
 		if (count($thisarray) > 0) {
@@ -18,11 +17,13 @@ function recentSpectrograms($subnet, $WEBPLOTS, $MINFILES, $MAXDAYS)
 		$time = $time - 86400;
 		$daysago++;
 	} while (count($filesarray) < $MINFILES && $daysago < $MAXDAYS);
+	rsort($filesarray);
 	$nonzerofilesarray = array();
 	foreach ($filesarray as $myfile) {
 		$size = filesize($myfile);
 		if ($size>0) {
 			$nonzerofilesarray[] = $myfile;
+			#print "$myfile<br/>\n";
 		}
 	}
 		

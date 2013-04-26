@@ -1,7 +1,14 @@
 <?php
 
+# Standard XHTML header
+$page_title = "$subnet Spectrogram Mosaic";
+$css = array( "css/newspectrograms.css", "css/mosaicMaker.css" );
+$googlemaps = 0;
+$js = array('toggle_menus.js', 'toggle_visibility.js');
+include('./includes/header.php');
+
 # header files
-include('./includes/antelope.php');
+include('./includes/getsubnets.php');
 include('./includes/daysPerMonth.php');
 include('./includes/mosaicMakerTable.php');	
 include('./includes/curPageURL.php');
@@ -9,18 +16,9 @@ include('./includes/findprevnextsubnets.php');
 include('./includes/scriptname.php');
 include('./includes/factorize.php');
 
-# Standard XHTML header
-#$subnet = !isset($_REQUEST['subnet'])? $subnets[0] : $_REQUEST['subnet'];
-$subnet = !isset($_REQUEST['subnet'])? "LittleSitkin" : $_REQUEST['subnet'];
-$thumbs = !isset($_REQUEST['thumbs'])? "small" : $_REQUEST['thumbs'];
-$page_title = "$subnet Spectrogram Mosaic";
-#$css = array( "css/reset2.css", "http://www.avo.alaska.edu/includes/admin/admin_test.css", "css/newspectrograms.css", "css/mosaicMaker.css" );
-#$css = array( "http://www.avo.alaska.edu/includes/admin/admin_test.css", "css/newspectrograms.css", "css/mosaicMaker.css" );
-$css = array( "css/newspectrograms.css", "css/mosaicMaker.css" );
-$googlemaps = 0;
-$js = array('toggle_menus.js', 'toggle_visibility.js');
-include('./includes/header.php');
 $MAXSUBNETLENGTH=10;
+$subnet = !isset($_REQUEST['subnet'])? $subnets[0] : $_REQUEST['subnet'];
+$thumbs = !isset($_REQUEST['thumbs'])? "small" : $_REQUEST['thumbs'];
 ?>
 
 <body>
@@ -290,7 +288,6 @@ $MAXSUBNETLENGTH=10;
 
 <?php
 	if ($plotMosaic==1) {
-		#$title = mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $plotsPerRow, $WEBPLOTS);
 		$title = mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $plotsPerRow, $WEBPLOTS, $thumbs, 1);
 	}
 	else
@@ -301,12 +298,6 @@ $MAXSUBNETLENGTH=10;
 <script type="text/javascript">
 document.title = "<?php echo $title;?>";
 </script>
-<!-- </div> -->
-
-<script language="Javascript" src="includes/hitcounter.php?page=mosaicMaker"><!--
-//--></script>
-<script language="Javascript" src="includes/hitcounter_unique.php?page=mosaicMaker"><!--
-//--></script>
 
 <a class="button" href="#top" style="float:right;">Top</a>
 

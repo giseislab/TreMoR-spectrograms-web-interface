@@ -19,7 +19,6 @@
 			echo "\t<script src=\"includes/$jsfile\" type=\"text/javascript\"> </script>\n";
 		}
 
-
 	?>
 </head>
 

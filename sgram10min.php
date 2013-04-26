@@ -59,7 +59,8 @@ $MAXSUBNETLENGTH=10;
 		$hour = mkNdigits($hour, 2);
 		$minute = mkNdigits($minute, 2); 
 
-		$sgram =  "$WEBPLOTS/sp/$subnet/$year/$month/$day/".$year.$month.$day."T".$hour.$minute."00.png";	
+		$sgram =  "$WEBPLOTS/$subnet/$year/$month/$day/".$year.$month.$day."T".$hour.$minute."00.png";	
+
 	}
 	else
 	{
@@ -100,13 +101,13 @@ $MAXSUBNETLENGTH=10;
 		# Time parameters of previous spectrogram and its path
 		list ($pyear, $pmonth, $pday, $phour, $pminute, $psecs) = addSeconds($year, $month, $day, $hour, $minute, 0, -600);
 		$pminute=floorminute($pminute);
-		$previous_sgram = "$WEBPLOTS/sp/$subnet/$pyear/$pmonth/$pday/".$pyear.$pmonth.$pday."T".$phour.$pminute."00.png";
+		$previous_sgram = "$WEBPLOTS/$subnet/$pyear/$pmonth/$pday/".$pyear.$pmonth.$pday."T".$phour.$pminute."00.png";
 		$previous_sgram_url = "$scriptname?subnet=$subnet&year=$pyear&month=$pmonth&day=$pday&hour=$phour&minute=$pminute&mosaicurl=$mosaicurl";
 
 		# Time parameters of next spectrogram & its path
 		list ($nyear, $nmonth, $nday, $nhour, $nminute, $nsecs) = addSeconds($year, $month, $day, $hour, $minute, 0, 600);
 		$nminute=floorminute($nminute);
-		$next_sgram = "$WEBPLOTS/sp/$subnet/$nyear/$nmonth/$nday/".$nyear.$nmonth.$nday."T".$nhour.$nminute."00.png";
+		$next_sgram = "$WEBPLOTS/$subnet/$nyear/$nmonth/$nday/".$nyear.$nmonth.$nday."T".$nhour.$nminute."00.png";
 		$next_sgram_url = "$scriptname?subnet=$subnet&year=$nyear&month=$nmonth&day=$nday&hour=$nhour&minute=$nminute&mosaicurl=$mosaicurl";
 
 		######################### THINGS THAT DEPEND ON KISKA TIME, WHICH MAY NOT BE CURRENT TIME ####################### 	
