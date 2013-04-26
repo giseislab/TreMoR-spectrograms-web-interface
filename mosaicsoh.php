@@ -308,12 +308,6 @@ $MAXSUBNETLENGTH=10;
 <script type="text/javascript">
 document.title = "<?php echo $title;?>";
 </script>
-<!-- </div> -->
-
-<script language="Javascript" src="includes/hitcounter.php?page=mosaicMaker"><!--
-//--></script>
-<script language="Javascript" src="includes/hitcounter_unique.php?page=mosaicMaker"><!--
-//--></script>
 
 <a class="button" href="#top" style="float:right;">Top</a>
 
