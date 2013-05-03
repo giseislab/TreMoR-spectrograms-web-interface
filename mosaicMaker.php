@@ -8,6 +8,7 @@ $js = array('toggle_menus.js', 'toggle_visibility.js');
 include('./includes/header.php');
 
 # header files
+include('./includes/antelope.php');
 include('./includes/getsubnets.php');
 include('./includes/daysPerMonth.php');
 include('./includes/mosaicMakerTable.php');	
@@ -299,7 +300,17 @@ $thumbs = !isset($_REQUEST['thumbs'])? "small" : $_REQUEST['thumbs'];
 document.title = "<?php echo $title;?>";
 </script>
 
-<a class="button" href="#top" style="float:right;">Top</a>
+<table width=800px align="center">
+<tr><td>
+<table class="center" width=780px><tr>
+	<td>
+	<a class="button" href="#top" style="float:right;">Top</a>
+	</td>
+
+	<?php include("includes/branding.php"); ?>
+</tr></table>
+
+</td></tr></table>
 
 </body>
 </html>
