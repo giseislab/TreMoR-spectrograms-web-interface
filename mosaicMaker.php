@@ -153,28 +153,10 @@ $thumbs = !isset($_REQUEST['thumbs'])? "small" : $_REQUEST['thumbs'];
 		        echo "<a title=\"Redraw spectrogram mosaic to end at current time\" href=\"$scriptname?subnet=$subnet&starthour=$numhours&endhour=0&plotsPerRow=$plotsPerRow\">Now</a>\n";
 		?>
 	</li>
-	<li onClick="toggle_visibility('show_url')" title="Permanent link to this spectrogram mosaic">Permalink</li>
-	<li title="Number of 10-minute spectrogram thumbnails to show on one row">
-		<?php
-			# plots per row widgit
-                  	echo "<select onchange=\"window.open('?subnet=$subnet&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&numhours=$numhours&plotsPerRow=' + this.options[this.selectedIndex].value, '_top')\" name=\"plotsPerRow\">";
-
-			echo "<option value=\"$plotsPerRow\" SELECTED>$plotsPerRow</option>";
-			$factors = allFactors(6 * $numhours);
-			sort($factors);
-			#foreach (array(1,2,3,6,9,12,18,24) as $ppr_option) {
-			#foreach (sort($factors) as $ppr_option) {
-			foreach ($factors as $ppr_option) {
-				if ($ppr_option > 2 && $ppr_option < 25) {
-					print "<option value=\"$ppr_option\">$ppr_option</option> ";
-				}
-			}
-			print "</select>";
-		?>	
-	</li>	
         </ul>
 </div>
 <p/>
+<!--
 <div id="show_url" class="hidden">
 	<table class="center" border=0><tr><td align="center">
 		<?php
@@ -190,8 +172,8 @@ $thumbs = !isset($_REQUEST['thumbs'])? "small" : $_REQUEST['thumbs'];
                         echo "$url\n";
 		?>
 	</td></tr></table>
-
 </div>
+-->
 <p/>
 
 <?php
@@ -302,15 +284,54 @@ document.title = "<?php echo $title;?>";
 
 <table width=800px align="center">
 <tr><td>
-<table class="center" width=780px><tr>
+<table class="center" width=780px>
+<tr>
 	<td>
-	<a class="button" href="#top" style="float:right;">Top</a>
-	</td>
 
+		<div class="button" onClick="toggle_visibility('show_url')" title="Permanent link to this spectrogram mosaic" style="width:100px;">Permalink</div><br/>
+		<div class="button" title="Number of 10-minute spectrogram thumbnails to show on one row" style="width:100px;">
+		<?php
+			# plots per row widgit
+                  	echo "Per Row:<select onchange=\"window.open('?subnet=$subnet&year=$year&month=$month&day=$day&hour=$hour&minute=$minute&numhours=$numhours&plotsPerRow=' + this.options[this.selectedIndex].value, '_top')\" name=\"plotsPerRow\">";
+
+			echo "<option value=\"$plotsPerRow\" SELECTED>$plotsPerRow</option>";
+			$factors = allFactors(6 * $numhours);
+			sort($factors);
+			#foreach (array(1,2,3,6,9,12,18,24) as $ppr_option) {
+			#foreach (sort($factors) as $ppr_option) {
+			foreach ($factors as $ppr_option) {
+				if ($ppr_option > 2 && $ppr_option < 25) {
+					print "<option value=\"$ppr_option\">$ppr_option</option> ";
+				}
+			}
+			print "</select>";
+		?>	
+		</div><br/>
+		<a class="button" href="#top" style="width:100px;">&#9650;Top</a><br/>
+	</td>	
 	<?php include("includes/branding.php"); ?>
 </tr></table>
 
 </td></tr></table>
+
+<div id="show_url" class="hidden">
+	<table class="center" border=0><tr><td align="center">
+		<?php
+			# Show URL
+			$link = curPageURL();
+			$loc = strpos($link, "plotsPerRow");
+			if ($loc !== FALSE) {
+				$link = substr($link, 0, $loc - 1);
+			}
+			echo "The permanent link to this web page is: <br/><font color='blue'>$link</font><br/n> ";
+                        $link = urlencode($link);
+                        $url = '<p/><table border=0 title="Create an AVO log post with this URL embedded in it"><tr><td><a class="button" href="https://www.avo.alaska.edu/admin/logs/add_post.php?url=' . $link . '" target=\"logs\">Add log post</a></td></tr></table>';
+                        echo "$url\n";
+		?>
+	</td></tr></table>
+
+</div>
+<p/>
 
 </body>
 </html>

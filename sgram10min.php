@@ -21,7 +21,7 @@ include('./includes/header.php');
  
 $mosaicurl = !isset($_REQUEST['mosaicurl'])? "" : $_REQUEST['mosaicurl'];	
 $mosaicurl = urlencode($mosaicurl);
-$MAXSUBNETLENGTH=10;
+$MAXSUBNETLENGTH=12;
 
 ?>
 
@@ -34,7 +34,6 @@ $MAXSUBNETLENGTH=10;
 
 	# Set subnet
 	$subnet = !isset($_REQUEST['subnet'])? $subnets[0] : $_REQUEST['subnet'];	
-
 	if (  (isset($_REQUEST['year'])) && (isset($_REQUEST['month'])) && (isset($_REQUEST['day'])) && (isset($_REQUEST['hour'])) && (isset($_REQUEST['minute']))   ) {
 	
 		# Get date/time variables from URL variables, then create sgram filename from them
@@ -66,7 +65,7 @@ $MAXSUBNETLENGTH=10;
 		# Get latest spectrogram for this subnet, and then form date/time variables from its filename
 		$sgramfiles = recentSpectrograms($subnet, $WEBPLOTS, 1, 30);
 		$sgram = $sgramfiles[0];
-		list ($year, $month, $day, $hour, $minute, $subnet) = sgramfilename2parts($sgram);
+		list ($year, $month, $day, $hour, $minute) = sgramfilename2parts($sgram);
 	}
 
 		
@@ -219,27 +218,11 @@ $MAXSUBNETLENGTH=10;
 			}
 		?>
 	</li>
-	<li title="Permanent link to this spectrogram" onClick="toggle_visibility('show_url')">Permalink</li>
+
         </ul>
 </div>
 <p/>
-<div id="show_url" class="hidden">
-	<table class="center" border=0><tr><td align="center">
-		<?php
-			# Show URL
-			$link = curPageURL();
-			$loc = strpos($link, "mosaicurl");
-			if ($loc !== FALSE) {
-				$link = substr($link, 0, $loc - 1);
-			}
-			echo "The permanent link to this web page is: <br/><font color='blue'>$link</font><br/n> ";
-                        $link = urlencode($link);
-                        $url = '<p/><table border=0 title="Create an AVO log post with this URL embedded in it"><tr><td><a class="button" href="https://www.avo.alaska.edu/admin/logs/add_post.php?url=' . $link . '" target=\"logs\">Add log post</a></td></tr></table>';
-                        echo "$url\n";
-		?>
-	</td></tr></table>
 
-</div>
 <form method="get" id="menu_absolutetime" class="hidden">
 
         <table class="center" border=0>
@@ -345,19 +328,19 @@ $MAXSUBNETLENGTH=10;
 		}	
 		echo "</td></tr>\n";
 	}
-			# Buttons
-			echo "<tr>\n";
-			echo "<td>\n";
-				echo "<table border=0 width=580><tr><td>\n";
+	?>
 
-				# Here is the colorbar button
-				echo "<a class=\"button\" href=\"#\" onclick=\"toggle_visibility('colorbar');\">Toggle colorbar</a>";
-				echo "<br/>";
-
+	<!-- Buttons -->
+	<tr><td>
+		<table border=0 width=580><tr><td>
+			<div class="button" title="Permanent link to this spectrogram" onClick="toggle_visibility('show_url')" style="width:100px;">Permalink</div><br/>
+			<!-- Here is the colorbar button -->
+			<a class="button" href="#" onclick="toggle_visibility('colorbar');" style="width:100px;">Toggle colorbar</a><br/>
+			<?php
 				# Diagnostic data		
 				$sgramtxtfile = str_replace("png", "txt", $sgram);
 				if ( file_exists($sgramtxtfile) ) {
-					printf("<a class=\"button\" href=$sgramtxtfile target=\"diagnostics\">Diagnostics</a>\n"); 
+					printf("<a class=\"button\" href=$sgramtxtfile target=\"diagnostics\" style=\"width:100px;\">Diagnostics</a>\n"); 
 				};
 				echo "</td>\n";
 
@@ -370,23 +353,30 @@ $MAXSUBNETLENGTH=10;
 
 				# Comments
 				#printf("<a class=\"button\" href=\"mailto:gthompson@alaska.edu?Subject=Spectrograms\">Send Mail</a>\n");
-				
-
 	
 				# About
 				#printf("<a class=\"button\" href=\"includes/about.php\" target=\"about\">About</a>\n"); 
-
-			echo "</td></tr></table>\n";
-
-
-			echo "</td></tr>\n";
-
-	echo "</table>\n";
-
-	
-?>
-
+			?>
+		</td></tr></table>
+	</td></tr>
+</table>
 <br/>
+<div id="show_url" class="hidden">
+	<table class="center" border=0><tr><td align="center">
+		<?php
+			# Show URL
+			$link = curPageURL();
+			$loc = strpos($link, "mosaicurl");
+			if ($loc !== FALSE) {
+				$link = substr($link, 0, $loc - 1);
+			}
+			echo "The permanent link to this web page is: <br/><font color='blue'>$link</font><br/n> ";
+                        $link = urlencode($link);
+                        $url = '<p/><table border=0 title="Create an AVO log post with this URL embedded in it"><tr><td><a class="button" href="https://www.avo.alaska.edu/admin/logs/add_post.php?url=' . $link . '" target=\"logs\">Add log post</a></td></tr></table>';
+                        echo "$url\n";
+		?>
+	</td></tr></table>
+</div>
 </body>
 </html>
 
