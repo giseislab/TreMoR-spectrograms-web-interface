@@ -300,7 +300,7 @@ $MAXSUBNETLENGTH=12;
 			# Colorbar div
 			echo "<td>\n";
 			echo "<div id=\"colorbar\" class=\"hidden\">\n";
-			echo "<br/><img src=\"images/colorbar3.png\" />";
+			echo "<br/><img src=\"images/iceweb_spectrogram_colorbar.png\" />";
 			echo "</div>\n";
 			echo "</td>\n";
 			echo "</tr>\n";
