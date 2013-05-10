@@ -295,6 +295,13 @@ $MAXSUBNETLENGTH=12;
 			echo "\t<tr>";
 			echo "<td>\n";
 			echo "<img usemap=\"#mymap\" src=\"$sgram\" />";
+			$oldsgram = "plots2/$subnet/$year/$month/$day/".basename($sgram);
+			if (file_exists($oldsgram)) {
+				echo "</td><td>\n";
+				echo "<img usemap=\"#mymap\" src=\"$oldsgram\" />";
+			} else {
+				echo "$oldsgram not found<br/>\n";
+			}
 			echo "</td>\n";
 
 			# Colorbar div
