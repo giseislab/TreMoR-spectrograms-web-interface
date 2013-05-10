@@ -28,6 +28,7 @@ a:link,a:active,a:visited{
 	background-color:#DFDFDF;
 	font-size:100%;
 	font-weight: bold;
+	width:140px;
 } 
 .button:hover{
 	color:#5656FF;
@@ -82,11 +83,11 @@ div#nav li a,select{
 h1,h2,h3 {font-size: 125%;}
 li.subnetlink {
 	/*width: 7.2em;*/
-	width: 7.9em;
+	width: 9.0em;
 } 
 li.subnetpulldown {
 	/*width: 7.2em;*/
-	width: 8.6em;
+	width: 10.0em;
 } 
 img {border: none !important;}
 /* This is for row spacers between mosaic rows */
