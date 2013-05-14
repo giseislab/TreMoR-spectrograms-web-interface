@@ -96,7 +96,7 @@ function mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $p
 			} else {
 				$firstRow = 0;
 			}
-			echo "<tr><td title=\"Start time for this row (UTC). Local time is $rowstartlocalhhmm\">$rowstarthhmm</td>\n";
+			echo "<tr class=\"sideborder\" ><td title=\"Start time for this row (UTC). Local time is $rowstartlocalhhmm\">$rowstarthhmm</td>\n";
 		}
 
 		# CELL STARTS HERE 			
@@ -108,12 +108,12 @@ function mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $p
 		} else {
 			if (file_exists($big_sgram)) {
 				if (filesize($big_sgram)==0) {
-					echo "<td title=\"NO SGRAM means that an attempt was made to load some data for this timeperiod, but a valid spectrogram has not been produced. There was probably a data error - or the spectrogram is being generated now.\" class=\"tdimg\"><a href=$sgramphplink><img src=\"$WEBPLOTS/nosgram_thumb.png\"></a></td>\n";
+					echo "<td title=\"An attempt has been made to load data for this timeperiod.\" class=\"tdimg\"><a href=$sgramphplink><img src=\"images/nothumbnail.png\"></a></td>\n";
 				} else {
-					echo "<td title=\"SMALL SGRAM means that a spectrogram image file was produced, but a thumbnail was not produced. There was probably a data error.\" class=\"tdimg\"><a href=$sgramphplink><img src=\"$WEBPLOTS/smallsgram_thumb.png\"></a></td>\n";
+					echo "<td title=\"No thumbnail image produced.\" class=\"tdimg\"><a href=$sgramphplink><img src=\"$big_sgram\" width=150 height=198></a></td>\n";
 				}
 			} else {
-				echo "<td title=\"NO DATA means either this time window has not yet been processed, or no data were available from the datasources tried\" class=\"tdimg\"><a href=$sgramphplink><img src=\"$WEBPLOTS/nodata_thumb.png\"></a></td>\n";
+				echo "<td title=\"No spectrogram image file found\" class=\"tdimg\"><a href=$sgramphplink><img src=\"images/nothumbnail.png\"></a></td>\n";
 			}
 		}
 

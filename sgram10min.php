@@ -300,14 +300,15 @@ $MAXSUBNETLENGTH=12;
 				echo "</td><td>\n";
 				echo "<img usemap=\"#mymap\" src=\"$oldsgram\" />";
 			} else {
-				echo "$oldsgram not found<br/>\n";
+				#echo "$oldsgram not found<br/>\n";
 			}
 			echo "</td>\n";
 
 			# Colorbar div
 			echo "<td>\n";
 			echo "<div id=\"colorbar\" class=\"hidden\">\n";
-			echo "<br/><img src=\"images/iceweb_spectrogram_colorbar.png\" />";
+			#echo "<br/><img src=\"images/iceweb_spectrogram_colorbar.png\" />";
+			echo "<br/><img src=\"images/colorbar.png\" />";
 			echo "</div>\n";
 			echo "</td>\n";
 			echo "</tr>\n";
