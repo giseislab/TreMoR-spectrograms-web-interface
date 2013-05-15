@@ -36,7 +36,8 @@ function mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $p
 		
 	}
 
-	echo "<table class=\"center\">\n";
+	#echo "<table class=\"center\" id=\"mosaictable\">\n";
+	echo "<table class=\"center\" >\n";
 
 	$c = 0;
 	$latestAge = "?";
@@ -96,7 +97,8 @@ function mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $p
 			} else {
 				$firstRow = 0;
 			}
-			echo "<tr class=\"sideborder\" ><td title=\"Start time for this row (UTC). Local time is $rowstartlocalhhmm\">$rowstarthhmm</td>\n";
+			#echo "<tr class=\"sideborder\" ><td class=\"time\" title=\"Start time for this row (UTC). Local time is $rowstartlocalhhmm\">$rowstarthhmm</td>\n";
+			echo "<tr><td class=\"time\" title=\"Start time for this row (UTC). Local time is $rowstartlocalhhmm\">$rowstarthhmm</td>\n";
 		}
 
 		# CELL STARTS HERE 			
@@ -126,7 +128,7 @@ function mosaicMaker($subnet, $year, $month, $day, $hour, $minute, $numhours, $p
 			date_default_timezone_set('US/Alaska');
 			$localtime = localtime($floorepochUTC,true); # Cannot just use time (see above vairable) here since it is now "floored"
 			$rowendlocalhhmm = sprintf("%4d/%02d/%02d %02d:%02d",$localtime[tm_year]+1900,$localtime[tm_mon]+1,$localtime[tm_mday],$localtime[tm_hour],$localtime[tm_min]); 
-			echo "<td title=\"End time for this row (UTC). Local time is $rowendlocalhhmm\">$hhmm</td>\n";
+			echo "<td class=\"time\" title=\"End time for this row (UTC). Local time is $rowendlocalhhmm\">$hhmm</td>\n";
 			$rowFinished = 1;
 
 		}

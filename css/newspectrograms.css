@@ -93,6 +93,7 @@ img {border: none !important;}
 tr.mosaicblankrow
 {
 	height: 16px; 
+	#background-color:#999999;
 }
 .tdimg
 {
@@ -118,6 +119,10 @@ table.center
 	margin-right:auto;
 	text-align:center;
 }
+#mosaictable
+{
+	background-color:#DFDFDF;
+}
 /* not used 
 .localtime {
 	font-size:60%;
@@ -129,4 +134,7 @@ table.center
 	border-right: 3px solid black;
 	margin: 5px;
 }
-
+td.time {
+	background-color:#DFDFDF;
+}
+	

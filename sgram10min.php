@@ -295,13 +295,13 @@ $MAXSUBNETLENGTH=12;
 			echo "\t<tr>";
 			echo "<td>\n";
 			echo "<img usemap=\"#mymap\" src=\"$sgram\" />";
-			$oldsgram = "plots2/$subnet/$year/$month/$day/".basename($sgram);
-			if (file_exists($oldsgram)) {
-				echo "</td><td>\n";
-				echo "<img usemap=\"#mymap\" src=\"$oldsgram\" />";
-			} else {
-				#echo "$oldsgram not found<br/>\n";
-			}
+			#$oldsgram = "plots2/$subnet/$year/$month/$day/".basename($sgram);
+			#if (file_exists($oldsgram)) {
+			#	echo "</td><td>\n";
+			#	echo "<img usemap=\"#mymap\" src=\"$oldsgram\" />";
+			#} else {
+			#	#echo "$oldsgram not found<br/>\n";
+			#}
 			echo "</td>\n";
 
 			# Colorbar div
@@ -343,7 +343,7 @@ $MAXSUBNETLENGTH=12;
 		<table border=0 width=580><tr><td>
 			<div class="button" title="Permanent link to this spectrogram" onClick="toggle_visibility('show_url')" style="width:100px;">Permalink</div><br/>
 			<!-- Here is the colorbar button -->
-			<a class="button" href="#" onclick="toggle_visibility('colorbar');" style="width:100px;">Toggle colorbar</a><br/>
+			<a class="button" href="#" onclick="toggle_visibility('colorbar');" style="width:100px;">Colorbar</a><br/>
 			<?php
 				# Diagnostic data		
 				$sgramtxtfile = str_replace("png", "txt", $sgram);
